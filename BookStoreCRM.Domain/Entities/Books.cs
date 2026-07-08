@@ -15,7 +15,7 @@ namespace BookStoreCRM.Domain.Entities
         public string? ImageUrl { get; set; } = string.Empty;
         public Categories Category { get; set; } = null!;
         public Guid CategoryId { get; set; }
-        public ICollection<OrderItems> OrderItems { get; set; } = [];
+        public ICollection<OrderItems> OrderItems { get; set; } = new List<OrderItems>();
         public ICollection<Reviews> Reviews { get; set; } = new List<Reviews>();
         public ICollection<Wishlists> Wishlists { get; set; } = new List<Wishlists>();
 

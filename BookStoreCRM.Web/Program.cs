@@ -1,4 +1,6 @@
 using BookStoreCRM.DAL.Context;
+using BookStoreCRM.DAL.Repositories.Implementation;
+using BookStoreCRM.DAL.Repositories.Interfaces;
 using BookStoreCRM.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +14,17 @@ namespace BookStoreCRM.Web
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
+            builder.Services.AddScoped<IBooksRepository, IBooksRepository>();
+            builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
+            builder.Services.AddScoped<IFriendRequestRepository, FriendRequestRepository>();
+            builder.Services.AddScoped<IOrderItemsRepository, OrderItemsRepository>();
+            builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
+            builder.Services.AddScoped<IReviewsRepository, ReviewsRepository>();
+            builder.Services.AddScoped<IWishlistsRepository, WishlistsRepository>();
+
+
+
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<AppDbContext>(options =>
             {
