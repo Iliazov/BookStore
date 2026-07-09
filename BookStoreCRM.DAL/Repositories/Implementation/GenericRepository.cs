@@ -1,9 +1,10 @@
 ﻿using BookStoreCRM.DAL.Context;
+using BookStoreCRM.DAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace BookStoreCRM.DAL.Repositories
+namespace BookStoreCRM.DAL.Repositories.Implementation
 {
-    public abstract class GenericRepository<TEntity> 
+    public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity>
         where TEntity : class
     {
         protected readonly AppDbContext _appDbContext;

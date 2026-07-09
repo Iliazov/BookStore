@@ -1,6 +1,8 @@
-﻿namespace BookStoreCRM.DAL.Repositories.Interfaces
+﻿using BookStoreCRM.Domain.Entities;
+
+namespace BookStoreCRM.DAL.Repositories.Interfaces
 {
-    public interface IFriendRequestRepository
+    public interface IFriendRequestRepository : IGenericRepository<FriendRequests>
     {
     }
 }

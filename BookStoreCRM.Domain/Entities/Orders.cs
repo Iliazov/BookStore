@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BookStoreCRM.Domain.Enums;
+﻿using BookStoreCRM.Domain.Enums;
 
 namespace BookStoreCRM.Domain.Entities
 {

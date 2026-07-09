@@ -1,6 +1,8 @@
-﻿namespace BookStoreCRM.DAL.Repositories.Interfaces
+﻿using BookStoreCRM.Domain.Entities;
+
+namespace BookStoreCRM.DAL.Repositories.Interfaces
 {
-    public interface IWishlistsRepository
+    public interface IWishlistsRepository : IGenericRepository<Wishlists>
     {
 
     }

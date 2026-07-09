@@ -1,6 +1,8 @@
-﻿namespace BookStoreCRM.DAL.Repositories.Interfaces
+﻿using BookStoreCRM.Domain.Entities;
+
+namespace BookStoreCRM.DAL.Repositories.Interfaces
 {
-    public interface IOrdersRepository
+    public interface IOrdersRepository : IGenericRepository<Orders>
     {
         
     }

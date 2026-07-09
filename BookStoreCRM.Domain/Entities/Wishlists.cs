@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BookStoreCRM.Domain.Entities
+﻿namespace BookStoreCRM.Domain.Entities
 {
     public class Wishlists : BaseEntity
     {

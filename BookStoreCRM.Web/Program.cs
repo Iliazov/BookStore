@@ -1,7 +1,12 @@
+using BookStoreCRM.BLL.Interfaces;
+using BookStoreCRM.BLL.Mapping;
+using BookStoreCRM.BLL.Services;
 using BookStoreCRM.DAL.Context;
 using BookStoreCRM.DAL.Repositories.Implementation;
 using BookStoreCRM.DAL.Repositories.Interfaces;
+using BookStoreCRM.DAL.UnitOfWork;
 using BookStoreCRM.Domain.Entities;
+using BookStoreCRM.Web.Mapping;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +20,7 @@ namespace BookStoreCRM.Web
 
             // Add services to the container.
             builder.Services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
-            builder.Services.AddScoped<IBooksRepository, IBooksRepository>();
+            builder.Services.AddScoped<IBooksRepository, BooksRepository>();
             builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
             builder.Services.AddScoped<IFriendRequestRepository, FriendRequestRepository>();
             builder.Services.AddScoped<IOrderItemsRepository, OrderItemsRepository>();
@@ -23,6 +28,9 @@ namespace BookStoreCRM.Web
             builder.Services.AddScoped<IReviewsRepository, ReviewsRepository>();
             builder.Services.AddScoped<IWishlistsRepository, WishlistsRepository>();
 
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            builder.Services.AddScoped<IBookService, BookService>();
 
 
             builder.Services.AddControllersWithViews();
@@ -31,7 +39,9 @@ namespace BookStoreCRM.Web
                 options.UseSqlServer(
                     builder.Configuration.GetConnectionString("DefaultConnection"));
             });
-
+            builder.Services.AddAutoMapper(
+              typeof(MappingProfile),
+              typeof(WebMappingProfile));
             builder.Services
             .AddIdentity<ApplicationUsers, IdentityRole<Guid>>(options =>
             {
@@ -43,6 +53,7 @@ namespace BookStoreCRM.Web
             })
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -55,6 +66,7 @@ namespace BookStoreCRM.Web
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseStatusCodePages();
 
             app.UseRouting();
             app.UseAuthentication();
