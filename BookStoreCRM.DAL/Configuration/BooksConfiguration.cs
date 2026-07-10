@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BookStoreCRM.Domain.Entities;
+﻿using BookStoreCRM.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -26,9 +21,6 @@ namespace BookStoreCRM.DAL.Configuration
 
             builder.Property(b => b.Price)
                     .HasColumnType("decimal(18,2)");
-
-            builder.HasIndex(b => b.Title)
-                .IsUnique();
 
             builder.HasOne(b => b.Category)
                 .WithMany(c => c.Books)

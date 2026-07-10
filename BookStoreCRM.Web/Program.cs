@@ -7,6 +7,8 @@ using BookStoreCRM.DAL.Repositories.Interfaces;
 using BookStoreCRM.DAL.UnitOfWork;
 using BookStoreCRM.Domain.Entities;
 using BookStoreCRM.Web.Mapping;
+using BookStoreCRM.Web.Middlewares;
+using BookStoreCRM.Web.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,6 +33,8 @@ namespace BookStoreCRM.Web
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             builder.Services.AddScoped<IBookService, BookService>();
+            builder.Services.AddScoped<IFileService, FileService>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 
             builder.Services.AddControllersWithViews();
@@ -63,6 +67,7 @@ namespace BookStoreCRM.Web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseGlobalExceptionHandling();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -71,6 +76,10 @@ namespace BookStoreCRM.Web
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.MapControllerRoute(
+                name: "areas",
+                pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
             app.MapControllerRoute(
                 name: "default",

@@ -1,4 +1,4 @@
-﻿@model List<BookStoreCRM.Web.Models.Books.BookItemViewModel>
+﻿@model List<BookStoreCRM.Web.Areas.Admin.ViewModels.Book.BookItemViewModel>
 @{
 	ViewData["Title"] = "Books";
 }
@@ -19,10 +19,10 @@
 		</tr>
 	</thead>
 	<tbody>
-		@foreach(var book in Model)
+		@foreach (var book in Model)
 		{
 			<tr>
-				<td></td>
+				<td><img src="@book.ImageUrl" alt="@book.Title" width="120" /></td>
 				<td>@book.Title</td>
 				<td>@book.Description</td>
 				<td>@book.Price</td>

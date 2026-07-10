@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BookStoreCRM.BLL.DTOs.Book;
+using BookStoreCRM.BLL.DTOs.Category;
 using BookStoreCRM.Domain.Entities;
 namespace BookStoreCRM.BLL.Mapping
 {
@@ -8,6 +9,9 @@ namespace BookStoreCRM.BLL.Mapping
         public MappingProfile()
         {
             CreateMap<Books, BookDTO>();
+            CreateMap<CreateBookDTO, Books>();
+
+            CreateMap<Categories, CategoryDTO>();
         }
     }
 }

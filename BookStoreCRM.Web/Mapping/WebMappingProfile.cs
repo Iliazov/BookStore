@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using BookStoreCRM.BLL.DTOs.Book;
-using BookStoreCRM.Web.Models.Books;
+using BookStoreCRM.Web.Areas.Admin.ViewModels.Book;
 
 namespace BookStoreCRM.Web.Mapping
 {
@@ -9,6 +9,9 @@ namespace BookStoreCRM.Web.Mapping
         public WebMappingProfile() 
         {
             CreateMap<BookDTO, BookItemViewModel>();
+            CreateMap<CreateBookViewModel, CreateBookDTO>();
+            CreateMap<BookDTO, UpdateBookViewModel>();
+            CreateMap<UpdateBookViewModel, UpdateBookDTO>();
         }
     }
 }
