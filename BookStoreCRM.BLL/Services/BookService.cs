@@ -26,6 +26,17 @@ namespace BookStoreCRM.BLL.Services
             await _unitOfWork.Save();
         }
 
+        public async Task DeleteAsync(Guid id)
+        {
+            var book = await _unitOfWork.BooksRepository.GetByIdAsync(id);
+            if(book is null)
+            {
+                throw new NotFoundException("The book not found");
+            }
+            _unitOfWork.BooksRepository.Delete(book);
+            await _unitOfWork.Save();
+        }
+
         public async Task<List<BookDTO>> GetAllBooksAsync()
         {
             var books = await _unitOfWork.BooksRepository.GetAllAsync();
@@ -42,9 +53,8 @@ namespace BookStoreCRM.BLL.Services
 
         public async Task UpdateBookAsync(UpdateBookDTO bookDTO)
         {
-            var book = await _unitOfWork.BooksRepository.GetByIdAsync(bookDTO.Id);
-            if (book == null)
-                throw new NotFoundException($"Book with id: {bookDTO.Id} not found");
+            var book = await _unitOfWork.BooksRepository.GetByIdAsync(bookDTO.Id)
+                ?? throw new NotFoundException($"Book with id: {bookDTO.Id} not found");
             _mapper.Map(bookDTO, book);
             await _unitOfWork.Save();
         }

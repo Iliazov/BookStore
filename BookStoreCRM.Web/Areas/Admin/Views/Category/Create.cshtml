@@ -1,0 +1,16 @@
+﻿@model BookStoreCRM.Web.Areas.Admin.ViewModels.Category.CreateCategoryViewModel
+@{
+	ViewData["Title"] = "Create Category";
+}
+
+<h1>Create Category</h1>
+
+<form asp-action="Create" method="post">
+	<div class="mb-3">
+		<label asp-for="Name"></label>
+		<input asp-for="Name" class="form-control" />
+		<span asp-validation-for="Name" class="text-danger"></span>
+	</div>
+
+	<button type="submit" class="btn btn-primary">Create</button>
+</form>

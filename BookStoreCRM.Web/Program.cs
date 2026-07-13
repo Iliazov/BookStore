@@ -9,6 +9,7 @@ using BookStoreCRM.Domain.Entities;
 using BookStoreCRM.Web.Mapping;
 using BookStoreCRM.Web.Middlewares;
 using BookStoreCRM.Web.Services;
+using BookStoreCRM.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,6 +32,7 @@ namespace BookStoreCRM.Web
             builder.Services.AddScoped<IWishlistsRepository, WishlistsRepository>();
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IFileValidator, FileValidator>();
 
             builder.Services.AddScoped<IBookService, BookService>();
             builder.Services.AddScoped<IFileService, FileService>();

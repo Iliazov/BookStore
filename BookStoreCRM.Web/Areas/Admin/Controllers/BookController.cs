@@ -1,10 +1,9 @@
-﻿using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using BookStoreCRM.BLL.DTOs.Book;
 using BookStoreCRM.BLL.Interfaces;
 using BookStoreCRM.Web.Areas.Admin.ViewModels.Book;
 using BookStoreCRM.Web.Constants;
-using BookStoreCRM.Web.Services;
+using BookStoreCRM.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -17,31 +16,27 @@ namespace BookStoreCRM.Web.Areas.Admin.Controllers
         private readonly ICategoryService _categoryService;
         private readonly IFileService _fileService;
         private readonly IMapper _mapper;
+        private readonly IFileValidator _fileValidator;
         public BookController(
             IBookService bookService,
             IMapper mapper,
             IFileService fileService,
-            ICategoryService categoryService)
+            ICategoryService categoryService,
+            IFileValidator fileValidator)
         {
             _bookService = bookService;
             _mapper = mapper;
             _fileService = fileService;
             _categoryService = categoryService;
+            _fileValidator = fileValidator;
         }
 
         [HttpGet]
         public async Task<IActionResult> Create()
         {
             var categories = await _categoryService.GetCategoriesAsync();
-            var model = new CreateBookViewModel
-            {
-                Categories = categories.Select(c => new SelectListItem
-                {
-                    Value = c.Id.ToString(),
-                    Text = c.Name
-                }).ToList()
-            };
-                    
+            var model = new CreateBookViewModel();
+            await LoadCategories(model);
             return View(model);
         }
 
@@ -58,26 +53,14 @@ namespace BookStoreCRM.Web.Areas.Admin.Controllers
         {
             var file = model.Image;
             
-            if(file is null || file.Length == 0)
+            if (!_fileValidator.Validate(file, nameof(model.Image), ModelState))
             {
-                ModelState.AddModelError(nameof(model.Image), "Please select an image");
-            }
-
-            if (file is not null && file.Length > FileConstants.MaxFileSize)
-            {
-                ModelState.AddModelError(nameof(model.Image), "Maximum file size is 5 MB");
+                return View(model);
             }
 
             if (!ModelState.IsValid)
             {
-                var categories = await _categoryService.GetCategoriesAsync();
-
-                model.Categories = categories.Select(c => new SelectListItem
-                {
-                    Value = c.Id.ToString(),
-                    Text = c.Name
-                }).ToList();
-                return View(model);
+                await LoadCategories(model);
             }
 
             string? imagePath = null;
@@ -105,9 +88,12 @@ namespace BookStoreCRM.Web.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(Guid id)
         {
             var bookDto = await _bookService.GetBookByIdAsync(id);
+
             if (bookDto == null)
                 return NotFound();
+
             var model = _mapper.Map<UpdateBookViewModel>(bookDto);
+            await LoadCategories(model);
             return View(model);
         }
 
@@ -116,11 +102,57 @@ namespace BookStoreCRM.Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
+                await LoadCategories(model);
+           
                 return View(model);
             }
+
+            if (model.NewImageUrl is not null)
+            {
+                if(!_fileValidator.Validate(
+                    model.NewImageUrl,
+                    nameof(model.NewImageUrl), 
+                    ModelState))
+                {
+                    return View(model);
+                }
+
+                await _fileService.DeleteAsync(model.ImageUrl);
+
+                using var stream = model.NewImageUrl.OpenReadStream();
+
+                model.ImageUrl = await _fileService.UploadFile(
+                    stream,
+                    model.NewImageUrl.FileName,
+                    FileFolders.Books);
+            }
+           
             var bookDto = _mapper.Map<UpdateBookDTO>(model);
             await _bookService.UpdateBookAsync(bookDto);
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(Guid Id)
+        {
+            var book = await _bookService.GetBookByIdAsync(Id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+            await _fileService.DeleteAsync(book.ImageUrl);
+            await _bookService.DeleteAsync(Id);
+            return RedirectToAction(nameof(Index));
+        }
+
+        private async Task LoadCategories(BookFormViewModel model)
+        {
+            var categories = await _categoryService.GetCategoriesAsync();
+            model.Categories = categories.Select(c => new SelectListItem
+            {
+                Value = c.Id.ToString(),
+                Text = c.Name
+            }).ToList();
         }
     }
 }

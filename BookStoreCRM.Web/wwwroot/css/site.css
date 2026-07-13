@@ -1,4 +1,4 @@
-html {
+﻿html {
   font-size: 14px;
 }
 
@@ -25,4 +25,11 @@ body {
 
 main {
     flex: 1;
+}
+
+.book-image {
+    width: 90px;
+    height: 120px; /* одинаковая высота для всех */
+    object-fit: cover; /* изображение заполнит область */
+    border-radius: 5px;
 }

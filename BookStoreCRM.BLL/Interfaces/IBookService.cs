@@ -8,5 +8,6 @@ namespace BookStoreCRM.BLL.Interfaces
         Task CreateBookAsync(CreateBookDTO bookDTO);
         Task UpdateBookAsync(UpdateBookDTO bookDTO);
         Task<BookDTO?> GetBookByIdAsync(Guid id);
+        Task DeleteAsync(Guid id);
     }
 }
