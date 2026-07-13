@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using BookStoreCRM.BLL.DTOs.Category;
 using BookStoreCRM.BLL.Interfaces;
 using BookStoreCRM.Web.Areas.Admin.ViewModels.Category;
@@ -37,6 +36,7 @@ namespace BookStoreCRM.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateCategoryViewModel model)
         {
             if (!ModelState.IsValid)
@@ -62,6 +62,7 @@ namespace BookStoreCRM.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(UpdateCategoryViewModel model)
         {
             if (!ModelState.IsValid)
@@ -74,6 +75,7 @@ namespace BookStoreCRM.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(Guid id)
         {
             await _categoryService.DeleteAsync(id);

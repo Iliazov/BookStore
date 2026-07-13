@@ -49,6 +49,7 @@ namespace BookStoreCRM.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateBookViewModel model)
         {
             var file = model.Image;
@@ -78,12 +79,6 @@ namespace BookStoreCRM.Web.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpDelete]
-        public IActionResult Delete(int id)
-        {
-            return NoContent();
-        }
-
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
@@ -98,6 +93,7 @@ namespace BookStoreCRM.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(UpdateBookViewModel model)
         {
             if (!ModelState.IsValid)
@@ -133,6 +129,7 @@ namespace BookStoreCRM.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(Guid Id)
         {
             var book = await _bookService.GetBookByIdAsync(Id);

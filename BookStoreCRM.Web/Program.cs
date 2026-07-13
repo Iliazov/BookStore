@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using BookStoreCRM.BLL.Interfaces;
 using BookStoreCRM.BLL.Mapping;
 using BookStoreCRM.BLL.Services;
@@ -8,6 +9,7 @@ using BookStoreCRM.DAL.UnitOfWork;
 using BookStoreCRM.Domain.Entities;
 using BookStoreCRM.Web.Mapping;
 using BookStoreCRM.Web.Middlewares;
+using BookStoreCRM.Web.Seed;
 using BookStoreCRM.Web.Services;
 using BookStoreCRM.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -17,7 +19,7 @@ namespace BookStoreCRM.Web
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -56,11 +58,28 @@ namespace BookStoreCRM.Web
                 options.Password.RequireLowercase = true;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequiredLength = 6;
+                options.User.RequireUniqueEmail = true;
             })
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
 
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/Login";
+                options.AccessDeniedPath = "/Account/AccessDenied";
+                options.Cookie.HttpOnly = true;
+                options.SlidingExpiration = true;
+            });
+
             var app = builder.Build();
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var userManager = services.GetRequiredService<UserManager<ApplicationUsers>>();
+                var roleManager = services.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
+
+                await IdentitySeeder.SeedAsync(userManager, roleManager);
+            }
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
