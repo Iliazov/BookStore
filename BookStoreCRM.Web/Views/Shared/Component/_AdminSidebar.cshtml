@@ -45,7 +45,10 @@
 
         </a>
 
-        <a href="#">
+        <a asp-area="Admin"
+            asp-controller="Order"
+            asp-action="Index"
+           class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Order" ? "active" : "")">
 
             <i class="bi bi-bag"></i>
 

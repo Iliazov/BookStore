@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BookStoreCRM.BLL.DTOs.Book;
 using BookStoreCRM.BLL.DTOs.Category;
+using BookStoreCRM.BLL.DTOs.Order;
 using BookStoreCRM.Domain.Entities;
 namespace BookStoreCRM.BLL.Mapping
 {
@@ -15,6 +16,12 @@ namespace BookStoreCRM.BLL.Mapping
             CreateMap<Categories, CategoryDTO>();
             CreateMap<CreateCategoryDTO, Categories>();
             CreateMap<UpdateCategoryDTO, Categories>();
+
+            CreateMap<Orders, OrderDTO>()
+                .ForMember(
+                    dest => dest.Customer,
+                    opt => opt.MapFrom(src =>
+                    $"{src.Customer.FirstName} {src.Customer.LastName}"));
         }
     }
 }

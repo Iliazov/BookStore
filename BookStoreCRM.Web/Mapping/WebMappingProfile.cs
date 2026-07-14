@@ -2,8 +2,10 @@
 using BookStoreCRM.BLL.DTOs.Account;
 using BookStoreCRM.BLL.DTOs.Book;
 using BookStoreCRM.BLL.DTOs.Category;
+using BookStoreCRM.BLL.DTOs.Order;
 using BookStoreCRM.Web.Areas.Admin.ViewModels.Book;
 using BookStoreCRM.Web.Areas.Admin.ViewModels.Category;
+using BookStoreCRM.Web.Areas.Admin.ViewModels.Order;
 using BookStoreCRM.Web.Models.Account;
 
 namespace BookStoreCRM.Web.Mapping
@@ -23,6 +25,8 @@ namespace BookStoreCRM.Web.Mapping
             CreateMap<UpdateCategoryViewModel, UpdateCategoryDTO>();
 
             CreateMap<RegisterViewModel, RegisterDTO>();
+
+            CreateMap<OrderDTO, OrderViewMoel>();
         }
     }
 }
