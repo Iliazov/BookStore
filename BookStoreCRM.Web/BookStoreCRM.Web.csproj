@@ -20,8 +20,4 @@
     <ProjectReference Include="..\BookStoreCRM.BLL\BookStoreCRM.BLL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\Books\" />
-  </ItemGroup>
-
 </Project>

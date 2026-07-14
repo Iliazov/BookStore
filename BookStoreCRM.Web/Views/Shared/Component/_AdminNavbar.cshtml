@@ -1,0 +1,68 @@
+﻿@using System.Security.Claims
+
+<nav class="admin-navbar">
+
+    <div class="navbar-left">
+
+        <button class="menu-toggle">
+
+            <i class="bi bi-list"></i>
+
+        </button>
+
+        <h4 class="page-title">
+
+            @ViewData["Title"]
+
+        </h4>
+
+    </div>
+
+    <div class="navbar-right">
+
+        <button class="icon-button">
+
+            <i class="bi bi-bell"></i>
+
+        </button>
+
+        <div class="user-info">
+
+            <div class="avatar">
+
+                @(User.Identity?.Name?.Substring(0, 1).ToUpper() ?? "A")
+
+            </div>
+
+            <div>
+
+                <div class="user-name">
+
+                    @(User.Identity?.Name ?? "Administrator")
+
+                </div>
+
+                <small class="text-muted">
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <text>Administrator</text>
+                    }
+                    else if (User.IsInRole("Manager"))
+                    {
+                        <text>Manager</text>
+                    }
+                    else
+                    {
+                        <text>Customer</text>
+                    }
+
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</nav>

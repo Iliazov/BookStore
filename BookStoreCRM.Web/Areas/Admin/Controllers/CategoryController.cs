@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
 using BookStoreCRM.BLL.DTOs.Category;
 using BookStoreCRM.BLL.Interfaces;
+using BookStoreCRM.Domain.Constants;
 using BookStoreCRM.Web.Areas.Admin.ViewModels.Category;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookStoreCRM.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = Roles.Admin + "," + Roles.Manager)]
     public class CategoryController : Controller
     {
         private readonly ICategoryService _categoryService;

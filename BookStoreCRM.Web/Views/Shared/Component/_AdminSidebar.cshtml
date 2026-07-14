@@ -1,0 +1,103 @@
+﻿@using BookStoreCRM.Domain.Constants
+
+<aside class="sidebar">
+
+    <div class="sidebar-logo">
+
+        <i class="bi bi-book-half"></i>
+
+        <span>BookStore CRM</span>
+
+    </div>
+
+    <nav class="sidebar-menu">
+
+        <a asp-area="Admin"
+           asp-controller="Dashboard"
+           asp-action="Index"
+           class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard" ? "active" : "")">
+
+            <i class="bi bi-speedometer2"></i>
+
+            Dashboard
+
+        </a>
+
+        <a asp-area="Admin"
+           asp-controller="Book"
+           asp-action="Index"
+           class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Book" ? "active" : "")">
+
+            <i class="bi bi-book"></i>
+
+            Books
+
+        </a>
+
+        <a asp-area="Admin"
+           asp-controller="Category"
+           asp-action="Index"
+           class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Category" ? "active" : "")">
+
+            <i class="bi bi-tags"></i>
+
+            Categories
+
+        </a>
+
+        <a href="#">
+
+            <i class="bi bi-bag"></i>
+
+            Orders
+
+        </a>
+
+        <a href="#">
+
+            <i class="bi bi-star"></i>
+
+            Reviews
+
+        </a>
+
+        <a href="#">
+
+            <i class="bi bi-heart"></i>
+
+            Wishlist
+
+        </a>
+
+        <a href="#">
+
+            <i class="bi bi-people"></i>
+
+            Users
+
+        </a>
+
+    </nav>
+
+    <div class="sidebar-footer">
+
+        <form asp-area=""
+              asp-controller="Account"
+              asp-action="LogOut"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+            <button class="logout-btn">
+
+                <i class="bi bi-box-arrow-right"></i>
+
+                Logout
+
+            </button>
+
+        </form>
+
+    </div>
+
+</aside>

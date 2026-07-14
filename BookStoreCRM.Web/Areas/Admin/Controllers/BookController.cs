@@ -1,15 +1,18 @@
 ﻿using AutoMapper;
 using BookStoreCRM.BLL.DTOs.Book;
 using BookStoreCRM.BLL.Interfaces;
+using BookStoreCRM.Domain.Constants;
 using BookStoreCRM.Web.Areas.Admin.ViewModels.Book;
 using BookStoreCRM.Web.Constants;
 using BookStoreCRM.Web.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BookStoreCRM.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = Roles.Admin+","+Roles.Manager)]
     public class BookController : Controller
     {
         private readonly IBookService _bookService;

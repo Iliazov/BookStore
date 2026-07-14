@@ -1,10 +1,13 @@
 using System.Diagnostics;
+using BookStoreCRM.Domain.Constants;
 using BookStoreCRM.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookStoreCRM.Web.Areas.Admin.Controllers;
 
 [Area("Admin")]
+[Authorize(Roles = Roles.Admin +"," + Roles.Manager)]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;

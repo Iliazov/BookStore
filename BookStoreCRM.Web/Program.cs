@@ -39,6 +39,7 @@ namespace BookStoreCRM.Web
             builder.Services.AddScoped<IBookService, BookService>();
             builder.Services.AddScoped<IFileService, FileService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
+            builder.Services.AddScoped<IAccountService, AccountService>();
 
 
             builder.Services.AddControllersWithViews();
@@ -67,8 +68,8 @@ namespace BookStoreCRM.Web
             {
                 options.LoginPath = "/Account/Login";
                 options.AccessDeniedPath = "/Account/AccessDenied";
-                options.Cookie.HttpOnly = true;
-                options.SlidingExpiration = true;
+                //options.Cookie.HttpOnly = true;
+                //options.SlidingExpiration = true;
             });
 
             var app = builder.Build();
