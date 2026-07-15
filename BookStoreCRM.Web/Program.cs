@@ -41,6 +41,7 @@ namespace BookStoreCRM.Web
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IAccountService, AccountService>();
             builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<IReviewService, ReviewService>();
 
 
             builder.Services.AddControllersWithViews();

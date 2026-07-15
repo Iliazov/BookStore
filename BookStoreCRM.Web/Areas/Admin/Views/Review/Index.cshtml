@@ -1,0 +1,66 @@
+﻿@model List<BookStoreCRM.Web.Areas.Admin.ViewModels.Review.ReviewViewModel>
+@{
+	ViewData["Title"] = "Reviews";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+	<div>
+		<h2>Reviews</h2>
+		<p class="text-muted">Manage Customer Reviews</p>
+	</div>
+</div>
+
+<div class="card">
+	<div class="card-body">
+		<table class="table table-hover align-middle">
+			<thead>
+				<tr>
+					<th>Book</th>
+					<th>Customer</th>
+					<th>Grade</th>
+					<th>Comment</th>
+					<th width="170"></th>
+				</tr>
+			</thead>
+
+			<tbody>
+				@foreach(var item in Model)
+				{
+					<tr class="cursor:pointer"
+						onclick="location.href='@Url.Action("ReviewDetail", "Review", new {area="Admin", id=item.Id})'">
+						<td>@item.BookTitle</td>
+						<td>@item.CustomerName</td>
+						<td>
+							@for(int i = 1; i<=5; i++)
+							{
+								if(i <= item.Grade)
+								{
+									<i class="bi bi-star-fill text-warning"></i>
+								}
+								else
+								{
+									<i class="bg bi-star text-warning"></i>
+								}
+							}
+						</td>
+						<td>@item.Comment</td>
+						<td>
+							<a asp-action="ReviewDetail"
+								asp-route-id="@item.Id"
+								class="btn btn-info btn-sm"><i class="bi bi-eye"></i></a>
+
+							<form asp-action="Delete"
+									asp-route-id="@item.Id"
+									method="post"
+									class="d-inline">
+								 @Html.AntiForgeryToken()
+								 <button onclick="return confirm('Delete this review?')"
+									 class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
+							</form>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>

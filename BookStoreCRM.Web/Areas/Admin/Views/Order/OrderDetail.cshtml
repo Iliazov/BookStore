@@ -1,0 +1,84 @@
+﻿@model BookStoreCRM.Web.Areas.Admin.ViewModels.Order.OrderDetailViewModel
+@{
+	ViewData["Title"] = "Order details";
+}
+
+<div class="container-fluid">
+
+	<div class="d-flex justify-content-between align-items-center mb-4">
+		<h2>Order Details</h2>
+		<a asp-action="Index" class="btn btn-secondary">
+			Back
+		</a>
+	</div>
+
+	<div class="card mb-4">
+
+		<div class="card-header">
+			Order Information
+		</div>
+
+		<div class="card-body">
+
+			<div class="row">
+				<div class="col-md-6">
+					<p><strong>Order Id:</strong> @Model.Id</p>
+					<p><strong>Customer:</strong> @Model.CustomerName</p>
+					<p><strong>Date:</strong> @Model.CreatedAt</p>
+				</div>
+			</div>
+
+			<div class="col-md-6">
+				@if(Model.Status.ToString() == "Pending")
+				{
+					<p class="badge bg-warning"><strong>Status:</strong> Pending</p>
+				}
+				else if(Model.Status.ToString() == "Paid")
+				{
+					<p class="badge bg-primary"><strong>Status:</strong> Paid</p>
+				}
+				else if (Model.Status.ToString() == "Delivered")
+				{
+					<p class="badge bg-success"><strong>Status:</strong> Delivered</p>
+				}
+				<p><strong>Total price:</strong> @Model.TotalPrice</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="card">
+	<div class="card-header">
+		Ordered Books
+	</div>
+
+	<div class="card-body p-0">
+		<table class="table table-hover align-middle mb-0">
+			<thead>
+				<tr>
+					<th>Image</th>
+					<th>Book</th>
+					<th>Price</th>
+					<th>Quantity</th>
+					<th>Total</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach(var item in Model.OrderItems)
+				{
+					<tr class="cursor:pointer"
+						onclick="location.href='@Url.Action("BookDetail", "Book", new {area="Admin", id=item.BookId})'">
+						<td>
+							<img src="@item.Image" width="60"/>
+						</td>
+						<td>@item.Book</td>
+						<td>@item.Price</td>
+						<td>@item.Quantity</td>
+						<td>$@(item.Quantity * item.Price)</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+
+</div>

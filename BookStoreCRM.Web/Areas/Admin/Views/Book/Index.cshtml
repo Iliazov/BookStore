@@ -29,7 +29,8 @@
 	<tbody>
 		@foreach (var book in Model)
 		{
-			<tr>
+			<tr class="cursor:pointer"
+				onclick="location.href='@Url.Action("BookDetail", "Book", new {area = "Admin", id=book.Id})'">
 				<td><img src="@book.ImageUrl" alt="@book.Title" class="book-image" /></td>
 				<td>@book.Title</td>
 				<td>@book.Author</td>

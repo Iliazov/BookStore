@@ -51,6 +51,14 @@ namespace BookStoreCRM.Web.Areas.Admin.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> BookDetail(Guid id)
+        {
+            var bookDTO = await _bookService.GetBookWithCategoryAsync(id);
+            var model = _mapper.Map<BookDetailsViewModel>(bookDTO);
+            return View(model);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateBookViewModel model)

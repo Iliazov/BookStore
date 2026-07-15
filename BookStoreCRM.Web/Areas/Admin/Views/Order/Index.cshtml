@@ -8,22 +8,30 @@
 <table class="table table-hover table-bordered align-middle">
 	<thead class="table-dark">
 		<tr>
-			<th>Id</th>
+			<th>Order Id</th>
 			<th>Customer</th>
 			<th>Price</th>
 			<th>Created at</th>
 			<th>Status</th>
+			<th></th>
 		</tr>
 	</thead>
 	<tbody>
 		@foreach(var order in Model)
 		{
-			<tr>
+			<tr class="cursor:pointer"
+				onclick="location.href='@Url.Action("OrderDetail", "Order", new {area = "Admin", id=order.Id})'">
 				<td>@order.Id</td>
-				<td>@order.Customer</td>
+				<td>@order.CustomerName</td>
 				<td>@order.TotalPrice</td>
 				<td>@order.CreatedAt</td>
 				<td>@order.Status.ToString()</td>
+				<td><a 
+					asp-area="Admin" 
+					asp-controller="Order" 
+					asp-action="OrderDetail" 
+					asp-route-id="@order.Id"
+				class="btn btn-primary">Details</a></td>
 			</tr>
 		}
 		

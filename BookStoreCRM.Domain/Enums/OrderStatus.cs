@@ -2,8 +2,8 @@
 {
     public enum OrderStatus
     {
-        New,
         Pending,
-        Completed
+        Paid,
+        Delivered
     }
 }

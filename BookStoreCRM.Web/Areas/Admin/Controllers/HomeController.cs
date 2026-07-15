@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BookStoreCRM.Web.Areas.Admin.Controllers;
 
 [Area("Admin")]
-[Authorize(Roles = Roles.Admin +"," + Roles.Manager)]
+[Authorize(Roles = Roles.Admin + "," + Roles.Manager)]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;

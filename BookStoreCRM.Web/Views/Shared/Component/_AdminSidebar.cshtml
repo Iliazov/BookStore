@@ -56,7 +56,10 @@
 
         </a>
 
-        <a href="#">
+        <a asp-area="Admin"
+            asp-controller="Review"
+            asp-action="Index"
+           class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Review" ? "active" : "")">
 
             <i class="bi bi-star"></i>
 

@@ -51,6 +51,14 @@ namespace BookStoreCRM.BLL.Services
             return _mapper.Map<BookDTO>(book);
         }
 
+        public async Task<BookDetailsDTO> GetBookWithCategoryAsync(Guid id)
+        {
+            var book = await _unitOfWork.BooksRepository.GetBookWithCategoryAsync(id);
+            if (book == null)
+                throw new NotFoundException("Book not found!");
+            return _mapper.Map<BookDetailsDTO>(book);
+        }
+
         public async Task UpdateBookAsync(UpdateBookDTO bookDTO)
         {
             var book = await _unitOfWork.BooksRepository.GetByIdAsync(bookDTO.Id)

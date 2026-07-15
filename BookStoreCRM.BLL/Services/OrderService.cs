@@ -2,6 +2,7 @@
 using BookStoreCRM.BLL.DTOs.Order;
 using BookStoreCRM.BLL.Interfaces;
 using BookStoreCRM.DAL.UnitOfWork;
+using BookStoreCRM.BLL.Exceptions;
 
 namespace BookStoreCRM.BLL.Services
 {
@@ -21,5 +22,16 @@ namespace BookStoreCRM.BLL.Services
             var orders = await _unitOfWork.OrdersRepository.GetAllWithCustomerAsync();
             return _mapper.Map<List<OrderDTO>>(orders);
         }
+
+        public async Task<OrderDetailsDTO> GetOrderDetailsAsync(Guid id)
+        {
+            var orders = await _unitOfWork.OrdersRepository.GetAllOrdersWithItemsAsync(id);
+            if (orders == null)
+            {
+                throw new NotFoundException("Order not found.");
+            }
+            return _mapper.Map<OrderDetailsDTO>(orders);
+        }
+
     }
 }

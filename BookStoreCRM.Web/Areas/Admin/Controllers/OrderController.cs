@@ -27,5 +27,13 @@ namespace BookStoreCRM.Web.Areas.Admin.Controllers
             var model = _mapper.Map<List<OrderViewMoel>>(orderDto);
             return View(model);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> OrderDetail(Guid id)
+        {
+            var details = await _orderService.GetOrderDetailsAsync(id);
+            var model = _mapper.Map<OrderDetailViewModel>(details);
+            return View(model);
+        }
     }
 }

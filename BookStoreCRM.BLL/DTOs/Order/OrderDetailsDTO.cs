@@ -1,13 +1,14 @@
 ﻿using BookStoreCRM.Domain.Enums;
 
-namespace BookStoreCRM.Web.Areas.Admin.ViewModels.Order
+namespace BookStoreCRM.BLL.DTOs.Order
 {
-    public class OrderViewMoel
+    public class OrderDetailsDTO
     {
         public Guid Id { get; set; }
         public string CustomerName { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
-        public decimal TotalPrice { get; set; }
         public OrderStatus Status { get; set; }
+        public decimal TotalPrice { get; set; }
+        public List<OrderItemsDTO> OrderItems { get; set; } = [];
     }
 }
