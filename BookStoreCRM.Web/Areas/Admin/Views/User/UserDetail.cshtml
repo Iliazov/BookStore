@@ -1,0 +1,174 @@
+@model BookStoreCRM.Web.Areas.Admin.ViewModels.User.UserDetailsViewModel
+
+@{
+    ViewData["Title"] = "User details";
+    var fullName = $"{Model.FirstName} {Model.LastName}".Trim();
+}
+
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+    <div>
+        <h2 class="mb-1">User details</h2>
+        <p class="text-muted mb-0">Account and contact information</p>
+    </div>
+
+    <div class="d-flex align-items-center flex-wrap gap-2">
+        <a asp-area="Admin"
+           asp-controller="User"
+           asp-action="Index"
+           class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i>
+            Back
+        </a>
+
+        <a asp-area="Admin"
+           asp-controller="User"
+           asp-action="Edit"
+           asp-route-id="@Model.Id"
+           class="btn btn-primary">
+            <i class="bi bi-pencil me-1"></i>
+            Edit
+        </a>
+
+        <form asp-area="Admin"
+              asp-controller="User"
+              asp-action="SetBlocked"
+              asp-route-id="@Model.Id"
+              asp-route-isBlocked="@(!Model.IsBlocked)"
+              method="post"
+              class="d-inline">
+            @Html.AntiForgeryToken()
+
+            <button type="submit"
+                    class="btn @(Model.IsBlocked ? "btn-success" : "btn-warning")"
+                    onclick="return confirm('@(Model.IsBlocked ? "Unblock this user?" : "Block this user?")')">
+                <i class="bi @(Model.IsBlocked ? "bi-unlock" : "bi-lock") me-1"></i>
+                @(Model.IsBlocked ? "Unblock" : "Block")
+            </button>
+        </form>
+
+        <form asp-area="Admin"
+              asp-controller="User"
+              asp-action="Delete"
+              asp-route-id="@Model.Id"
+              method="post"
+              class="d-inline">
+            @Html.AntiForgeryToken()
+
+            <button type="submit"
+                    class="btn btn-outline-danger"
+                    onclick="return confirm('Delete this user permanently?')">
+                <i class="bi bi-trash me-1"></i>
+                Delete
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4 p-lg-5">
+        <div class="row g-5">
+            <div class="col-lg-4 text-center border-end">
+                @if (!string.IsNullOrWhiteSpace(Model.Avatar))
+                {
+                    <img src="@Model.Avatar"
+                         alt="@fullName"
+                         class="rounded-circle object-fit-cover border mb-3"
+                         width="150"
+                         height="150" />
+                }
+                else
+                {
+                    <div class="rounded-circle bg-light border d-inline-flex align-items-center justify-content-center text-secondary mb-3"
+                         style="width: 150px; height: 150px;">
+                        <i class="bi bi-person-fill" style="font-size: 5rem;"></i>
+                    </div>
+                }
+
+                <h4 class="mb-1">
+                    @(string.IsNullOrWhiteSpace(fullName) ? "Unnamed user" : fullName)
+                </h4>
+
+                <p class="text-muted mb-3">@Model.Email</p>
+
+                <div class="d-flex justify-content-center gap-2 flex-wrap">
+                    <span class="badge bg-primary-subtle text-primary px-3 py-2">
+                        @(string.IsNullOrWhiteSpace(Model.Role) ? "No role" : Model.Role)
+                    </span>
+
+                    @if (Model.IsBlocked)
+                    {
+                        <span class="badge bg-danger-subtle text-danger px-3 py-2">Blocked</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-success-subtle text-success px-3 py-2">Active</span>
+                    }
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <h5 class="mb-4">Account information</h5>
+
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="text-muted small mb-1">First name</div>
+                        <div class="fw-semibold">
+                            @(string.IsNullOrWhiteSpace(Model.FirstName) ? "—" : Model.FirstName)
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="text-muted small mb-1">Last name</div>
+                        <div class="fw-semibold">
+                            @(string.IsNullOrWhiteSpace(Model.LastName) ? "—" : Model.LastName)
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="text-muted small mb-1">Email</div>
+                        <div class="fw-semibold">@Model.Email</div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="text-muted small mb-1">Email status</div>
+                        @if (Model.EmailConfirmed)
+                        {
+                            <span class="text-success fw-semibold">
+                                <i class="bi bi-check-circle me-1"></i>Confirmed
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="text-warning fw-semibold">
+                                <i class="bi bi-exclamation-circle me-1"></i>Not confirmed
+                            </span>
+                        }
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="text-muted small mb-1">Phone number</div>
+                        <div class="fw-semibold">
+                            @(string.IsNullOrWhiteSpace(Model.PhoneNumber) ? "Not provided" : Model.PhoneNumber)
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="text-muted small mb-1">Role</div>
+                        <div class="fw-semibold">
+                            @(string.IsNullOrWhiteSpace(Model.Role) ? "No role" : Model.Role)
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <hr class="my-1" />
+                    </div>
+
+                    <div class="col-12">
+                        <div class="text-muted small mb-1">User ID</div>
+                        <code class="text-dark">@Model.Id</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

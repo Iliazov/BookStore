@@ -1,0 +1,210 @@
+@model BookStoreCRM.Web.Areas.Admin.ViewModels.Dashboard.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<section class="dashboard">
+    <div class="dashboard-heading">
+        <div>
+            <span class="dashboard-eyebrow">Overview</span>
+            <h1>Welcome back</h1>
+            <p>Here is what is happening in your bookstore.</p>
+        </div>
+
+        <div class="dashboard-date">
+            <i class="bi bi-calendar3"></i>
+            <span>@DateTime.Now.ToString("MMMM dd, yyyy")</span>
+        </div>
+    </div>
+
+    <div class="dashboard-stats">
+        <a asp-area="Admin" asp-controller="Book" asp-action="Index" class="stat-card stat-card--blue">
+            <span class="stat-card__icon"><i class="bi bi-book"></i></span>
+            <span class="stat-card__content">
+                <span class="stat-card__label">Books</span>
+                <strong>@Model.BooksCount</strong>
+                <small>View catalogue <i class="bi bi-arrow-right"></i></small>
+            </span>
+        </a>
+
+        <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="stat-card stat-card--violet">
+            <span class="stat-card__icon"><i class="bi bi-tags"></i></span>
+            <span class="stat-card__content">
+                <span class="stat-card__label">Categories</span>
+                <strong>@Model.CategoriesCount</strong>
+                <small>Manage categories <i class="bi bi-arrow-right"></i></small>
+            </span>
+        </a>
+
+        <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="stat-card stat-card--green">
+            <span class="stat-card__icon"><i class="bi bi-bag-check"></i></span>
+            <span class="stat-card__content">
+                <span class="stat-card__label">Orders</span>
+                <strong>@Model.OrdersCount</strong>
+                <small>View all orders <i class="bi bi-arrow-right"></i></small>
+            </span>
+        </a>
+
+        <a asp-area="Admin" asp-controller="Review" asp-action="Index" class="stat-card stat-card--orange">
+            <span class="stat-card__icon"><i class="bi bi-star"></i></span>
+            <span class="stat-card__content">
+                <span class="stat-card__label">Reviews</span>
+                <strong>@Model.ReviewsCount</strong>
+                <small>Manage reviews <i class="bi bi-arrow-right"></i></small>
+            </span>
+        </a>
+    </div>
+
+    <div class="dashboard-grid">
+        <article class="dashboard-panel dashboard-panel--orders">
+            <div class="dashboard-panel__header">
+                <div>
+                    <h2>Recent orders</h2>
+                    <p>The five newest customer orders</p>
+                </div>
+                <a asp-area="Admin" asp-controller="Order" asp-action="Index">View all</a>
+            </div>
+
+            @if (Model.RecentOrders.Count == 0)
+            {
+                <div class="dashboard-empty">
+                    <i class="bi bi-bag-x"></i>
+                    <strong>No orders yet</strong>
+                    <span>New customer orders will appear here.</span>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table dashboard-table align-middle">
+                        <thead>
+                            <tr>
+                                <th>Order</th>
+                                <th>Customer</th>
+                                <th>Date</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var order in Model.RecentOrders)
+                            {
+                                <tr>
+                                    <td class="dashboard-order-id">#@order.Id.ToString()[..8]</td>
+                                    <td>@order.CustomerName</td>
+                                    <td>@order.CreatedAt.ToString("MMM dd, yyyy")</td>
+                                    <td class="dashboard-price">@order.TotalPrice.ToString("N2")</td>
+                                    <td>
+                                        <span class="dashboard-status dashboard-status--@order.Status.ToString().ToLowerInvariant()">
+                                            @order.Status
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a asp-area="Admin"
+                                           asp-controller="Order"
+                                           asp-action="OrderDetail"
+                                           asp-route-id="@order.Id"
+                                           class="dashboard-row-link"
+                                           aria-label="View order @order.Id">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </article>
+
+        <aside class="dashboard-side">
+            <article class="dashboard-panel dashboard-value-card">
+                <div class="dashboard-value-card__icon">
+                    <i class="bi bi-graph-up-arrow"></i>
+                </div>
+                <span>Total order value</span>
+                <strong>@Model.TotalOrderValue.ToString("N2")</strong>
+                <small>Across all recorded orders</small>
+            </article>
+
+            <article class="dashboard-panel">
+                <div class="dashboard-panel__header">
+                    <div>
+                        <h2>Quick actions</h2>
+                        <p>Common management tasks</p>
+                    </div>
+                </div>
+
+                <div class="quick-actions">
+                    <a asp-area="Admin" asp-controller="Book" asp-action="Create">
+                        <i class="bi bi-plus-circle"></i>
+                        <span>Add book</span>
+                    </a>
+                    <a asp-area="Admin" asp-controller="Category" asp-action="Create">
+                        <i class="bi bi-tag"></i>
+                        <span>Add category</span>
+                    </a>
+                    <a asp-area="Admin" asp-controller="Order" asp-action="Index">
+                        <i class="bi bi-receipt"></i>
+                        <span>Orders</span>
+                    </a>
+                    <a asp-area="Admin" asp-controller="Review" asp-action="Index">
+                        <i class="bi bi-chat-square-text"></i>
+                        <span>Reviews</span>
+                    </a>
+                </div>
+            </article>
+        </aside>
+    </div>
+
+    <article class="dashboard-panel dashboard-reviews">
+        <div class="dashboard-panel__header">
+            <div>
+                <h2>Reviews overview</h2>
+                <p>Recent customer feedback</p>
+            </div>
+            <a asp-area="Admin" asp-controller="Review" asp-action="Index">View all</a>
+        </div>
+
+        @if (Model.RecentReviews.Count == 0)
+        {
+            <div class="dashboard-empty dashboard-empty--compact">
+                <i class="bi bi-chat-square"></i>
+                <strong>No reviews yet</strong>
+                <span>Customer feedback will appear here.</span>
+            </div>
+        }
+        else
+        {
+            <div class="review-grid">
+                @foreach (var review in Model.RecentReviews)
+                {
+                    <a asp-area="Admin"
+                       asp-controller="Review"
+                       asp-action="ReviewDetail"
+                       asp-route-id="@review.Id"
+                       class="review-card">
+                        <div class="review-card__top">
+                            <span class="review-avatar">
+                                @(string.IsNullOrWhiteSpace(review.CustomerName) ? "?" : review.CustomerName[..1].ToUpperInvariant())
+                            </span>
+                            <span>
+                                <strong>@review.CustomerName</strong>
+                                <small>@review.BookTitle</small>
+                            </span>
+                        </div>
+                        <div class="review-stars" aria-label="Rating @review.Grade out of 5">
+                            @for (var i = 1; i <= 5; i++)
+                            {
+                                <i class="bi @(i <= review.Grade ? "bi-star-fill" : "bi-star")"></i>
+                            }
+                        </div>
+                        <p>@(string.IsNullOrWhiteSpace(review.Comment) ? "No comment provided." : review.Comment)</p>
+                    </a>
+                }
+            </div>
+        }
+    </article>
+</section>

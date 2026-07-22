@@ -42,6 +42,8 @@ namespace BookStoreCRM.Web
             builder.Services.AddScoped<IAccountService, AccountService>();
             builder.Services.AddScoped<IOrderService, OrderService>();
             builder.Services.AddScoped<IReviewService, ReviewService>();
+            builder.Services.AddScoped<IDashboardService, DashboardService>();
+            builder.Services.AddScoped<IUserService, UserService>();
 
 
             builder.Services.AddControllersWithViews();
@@ -51,8 +53,9 @@ namespace BookStoreCRM.Web
                     builder.Configuration.GetConnectionString("DefaultConnection"));
             });
             builder.Services.AddAutoMapper(
-              typeof(MappingProfile),
-              typeof(WebMappingProfile));
+                _ => { },
+                typeof(MappingProfile),
+                typeof(WebMappingProfile));
             builder.Services
             .AddIdentity<ApplicationUsers, IdentityRole<Guid>>(options =>
             {

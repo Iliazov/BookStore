@@ -3,6 +3,7 @@ using BookStoreCRM.BLL.DTOs.Book;
 using BookStoreCRM.BLL.DTOs.Category;
 using BookStoreCRM.BLL.DTOs.Order;
 using BookStoreCRM.BLL.DTOs.Review;
+using BookStoreCRM.BLL.DTOs.User;
 using BookStoreCRM.Domain.Entities;
 namespace BookStoreCRM.BLL.Mapping
 {
@@ -65,6 +66,10 @@ namespace BookStoreCRM.BLL.Mapping
                 .ForMember(
                     dest => dest.BookImage,
                     opt => opt.MapFrom(src => src.Book.ImageUrl));
+
+            CreateMap<ApplicationUsers, UserDTO>();
+            CreateMap<ApplicationUsers, UserDetailsDTO>();
+            CreateMap<ApplicationUsers, UpdateUserDTO>();
 
         }
     }

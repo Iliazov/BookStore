@@ -9,7 +9,7 @@ namespace BookStoreCRM.DAL.Configuration
         public void Configure(EntityTypeBuilder<OrderItems> builder)
         {
             builder.ToTable(nameof(OrderItems));
-            builder.HasKey(oi =>  oi.OrderId);
+            builder.HasKey(oi => oi.Id);
 
             builder.Property(oi => oi.Price)
                    .HasColumnType("decimal(18,2)");

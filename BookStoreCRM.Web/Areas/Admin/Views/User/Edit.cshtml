@@ -1,0 +1,125 @@
+@using BookStoreCRM.Domain.Constants
+@model BookStoreCRM.Web.Areas.Admin.ViewModels.User.UpdateUserVeiwModel
+
+@{
+    ViewData["Title"] = "Update user";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="mb-1">Update user</h2>
+        <p class="text-muted mb-0">Edit account information and role</p>
+    </div>
+
+    <a asp-area="Admin"
+       asp-controller="User"
+       asp-action="UserDetail"
+       asp-route-id="@Model.Id"
+       class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left me-1"></i>
+        Cancel
+    </a>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+        <form asp-area="Admin"
+              asp-controller="User"
+              asp-action="Edit"
+              method="post">
+            @Html.AntiForgeryToken()
+
+            <input asp-for="Id" type="hidden" />
+            <input asp-for="Avatar" type="hidden" />
+
+            <div asp-validation-summary="ModelOnly"
+                 class="alert alert-danger"
+                 role="alert"></div>
+
+            <div class="row g-4">
+                <div class="col-12 text-center">
+                    @if (!string.IsNullOrWhiteSpace(Model.Avatar))
+                    {
+                        <img src="@Model.Avatar"
+                             alt="User avatar"
+                             class="rounded-circle object-fit-cover border"
+                             width="110"
+                             height="110" />
+                    }
+                    else
+                    {
+                        <div class="rounded-circle bg-light border d-inline-flex align-items-center justify-content-center text-secondary"
+                             style="width: 110px; height: 110px;">
+                            <i class="bi bi-person-fill" style="font-size: 3.5rem;"></i>
+                        </div>
+                    }
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="FirstName" class="form-label">First name</label>
+                    <input asp-for="FirstName" class="form-control" />
+                    <span asp-validation-for="FirstName" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="LastName" class="form-label">Last name</label>
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Email" class="form-label">Email</label>
+                    <input asp-for="Email" type="email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="PhoneNumber" class="form-label">Phone number</label>
+                    <input asp-for="PhoneNumber" type="tel" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Role" class="form-label">Role</label>
+                    <select asp-for="Role" class="form-select">
+                        <option value="@Roles.Admin">Admin</option>
+                        <option value="@Roles.Manager">Manager</option>
+                        <option value="@Roles.Customer">Customer</option>
+                    </select>
+                    <span asp-validation-for="Role" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6 d-flex align-items-end">
+                    <div class="form-check mb-2">
+                        <input asp-for="EmailConfirmed" class="form-check-input" />
+                        <label asp-for="EmailConfirmed" class="form-check-label">
+                            Email confirmed
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <hr />
+                    <div class="d-flex justify-content-end gap-2">
+                        <a asp-area="Admin"
+                           asp-controller="User"
+                           asp-action="UserDetail"
+                           asp-route-id="@Model.Id"
+                           class="btn btn-light border">
+                            Cancel
+                        </a>
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-lg me-1"></i>
+                            Save changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
