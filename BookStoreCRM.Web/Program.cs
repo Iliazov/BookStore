@@ -78,6 +78,8 @@ namespace BookStoreCRM.Web
             });
 
             var app = builder.Build();
+            app.UseExceptionHandler("/Error");
+            app.UseStatusCodePagesWithReExecute("/Error/{0}");
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
@@ -94,7 +96,6 @@ namespace BookStoreCRM.Web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.UseGlobalExceptionHandling();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -106,7 +107,7 @@ namespace BookStoreCRM.Web
 
             app.MapControllerRoute(
                 name: "areas",
-                pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");
 
             app.MapControllerRoute(
                 name: "default",

@@ -39,7 +39,7 @@ namespace BookStoreCRM.BLL.Services
 
         public async Task<List<BookDTO>> GetAllBooksAsync()
         {
-            var books = await _unitOfWork.BooksRepository.GetAllAsync();
+            var books = await _unitOfWork.BooksRepository.CheckCustomerOrdersAsync();
             return _mapper.Map<List<BookDTO>>(books);
         }
 

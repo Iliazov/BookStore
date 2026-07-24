@@ -9,6 +9,11 @@ namespace BookStoreCRM.DAL.Repositories.Implementation
     {
         public OrdersRepository(AppDbContext context) : base(context) { }
 
+        public async Task<bool> CheckCustomerOrdersAsync(Guid Id)
+        {
+            return await _dbSet.AnyAsync(c => c.CustomerId == Id);
+        }
+
         public async Task<Orders?> GetAllOrdersWithItemsAsync(Guid id)
         {
             return await _dbSet

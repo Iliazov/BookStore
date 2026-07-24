@@ -5,6 +5,7 @@ using BookStoreCRM.BLL.Exceptions;
 using BookStoreCRM.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using BookStoreCRM.DAL.UnitOfWork;
 
 namespace BookStoreCRM.BLL.Services
 {
@@ -13,15 +14,36 @@ namespace BookStoreCRM.BLL.Services
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUsers> _userManager;
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
+        private readonly IUnitOfWork _unitOfWork;
         public UserService(
             IMapper mapper,
             UserManager<ApplicationUsers> userManager,
+            IUnitOfWork unitOfWork,
             RoleManager<IdentityRole<Guid>> roleManager) 
         {
             _mapper = mapper;
             _userManager = userManager;
             _roleManager = roleManager;
+            _unitOfWork = unitOfWork;
         }
+
+        public async Task DeleteAsync(Guid id, string? currentUserId)
+        {
+            if(id.ToString() == currentUserId)
+            {
+                throw new InvalidOperationException("You can't delete your own account!");
+            }
+            var user = await _userManager.FindByIdAsync(id.ToString()) 
+                ?? throw new NotFoundException("User not found");
+            var hasOrders = await _unitOfWork.OrdersRepository.CheckCustomerOrdersAsync(user.Id);
+            if (hasOrders)
+            {
+                throw new ConflictException("This user cannot be deleted because they have existing orders.");
+            }
+            
+            await _userManager.DeleteAsync(user);
+        }
+
         public async Task<List<UserDTO>> GetAllAsync()
         {
             var users = await _userManager.Users.AsNoTracking().ToListAsync();
@@ -39,11 +61,9 @@ namespace BookStoreCRM.BLL.Services
 
         public async Task<UserDetailsDTO> GetByIdAsync(Guid id)
         {
-            var user = await _userManager.FindByIdAsync(id.ToString());
-            if(user is null)
-            {
-                throw new NotFoundException("User not found!");
-            }
+            var user = await _userManager.FindByIdAsync(id.ToString()) 
+                ?? throw new NotFoundException("User not found!");
+            
             var dto = _mapper.Map<UserDetailsDTO>(user);
             var roles = await _userManager.GetRolesAsync(user);
             dto.Role = roles.FirstOrDefault() ?? string.Empty;
@@ -65,6 +85,32 @@ namespace BookStoreCRM.BLL.Services
             dto.Role = role.FirstOrDefault() ?? string.Empty;
             dto.EmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
             return dto;
+        }
+
+        public async Task SetBlockedAsync(Guid id, bool blocked, string? currentUserId)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString()) 
+                ?? throw new NotFoundException("User not found.");
+            
+            if (blocked && id.ToString() == currentUserId)
+            {
+                throw new ConflictException("You can not block your own account");
+            }
+            var enableResult = await _userManager.SetLockoutEnabledAsync(user, true);
+            if (!enableResult.Succeeded)
+            {
+                throw new ValidationException(string.Join(
+                    " ", enableResult.Errors.Select(error => error.Description)
+                    ));
+            }
+            var blockResult = await _userManager.SetLockoutEndDateAsync(user, blocked ? DateTimeOffset.MaxValue : null);
+            if (!blockResult.Succeeded)
+            {
+                throw new ValidationException(string.Join(
+                  " ",
+                  blockResult.Errors.Select(error => error.Description)));
+            }
+
         }
 
         public async Task UpdateAsync(UpdateUserDTO dto)

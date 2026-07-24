@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using BookStoreCRM.BLL.Interfaces;
 using BookStoreCRM.Web.Areas.Admin.ViewModels.User;
 using BookStoreCRM.BLL.DTOs.User;
+using System.Security.Claims;
 
 namespace BookStoreCRM.Web.Areas.Admin.Controllers
 {
@@ -56,6 +57,30 @@ namespace BookStoreCRM.Web.Areas.Admin.Controllers
             var dto = _mapper.Map<UpdateUserDTO>(model);
             await _userService.UpdateAsync(dto);
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var user = await _userService.GetByIdAsync(id);
+            if(user is null)
+            {
+                return NotFound();
+            }
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            await _userService.DeleteAsync(id, currentUserId);
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SetBlocked(Guid id, bool isBlocked)
+        {
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            await _userService.SetBlockedAsync(id, isBlocked, currentUserId);
+            TempData["SuccessMessage"] = isBlocked
+             ? "User successfully blocked."
+             : "User successfully unblocked.";
+            return RedirectToAction(nameof(UserDetail), new {id});
         }
     }
 }

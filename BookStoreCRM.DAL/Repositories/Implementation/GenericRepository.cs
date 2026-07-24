@@ -15,7 +15,7 @@ namespace BookStoreCRM.DAL.Repositories.Implementation
             _dbSet = context.Set<TEntity>();
         }
 
-        public virtual async Task<List<TEntity>> GetAllAsync()
+        public virtual async Task<List<TEntity>> CheckCustomerOrdersAsync()
         {
             return await _dbSet.ToListAsync();
         }

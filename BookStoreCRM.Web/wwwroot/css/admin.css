@@ -2,3 +2,12 @@
 @import url("navbar.css");
 @import url("layout.css");
 @import url("dashboard.css");
+
+.user-row.blocked-user {
+    opacity: 0.55;
+    transition: opacity 0.2s ease;
+}
+
+    .user-row.blocked-user:hover {
+        opacity: 0.75;
+    }

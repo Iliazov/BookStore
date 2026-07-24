@@ -42,7 +42,7 @@ namespace BookStoreCRM.BLL.Services
 
         public async Task<List<CategoryDTO>> GetCategoriesAsync()
         {
-            var categories = await _unitOfWork.CategoryRepository.GetAllAsync();
+            var categories = await _unitOfWork.CategoryRepository.CheckCustomerOrdersAsync();
             return _mapper.Map<List<CategoryDTO>>(categories);
         }
 

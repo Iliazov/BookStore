@@ -45,7 +45,7 @@
                                 ? "?"
                                 : fullName[..1].ToUpperInvariant();
 
-                            <tr class="cursor:pointer"
+                            <tr class="user-row @(user.IsBlocked ? "blocked-user" : "")"
                                 onclick="location.href='@Url.Action("UserDetail", "User", new { area = "Admin", id = user.Id })'">
                                 <td class="ps-4">
                                     <div class="d-flex align-items-center gap-3">

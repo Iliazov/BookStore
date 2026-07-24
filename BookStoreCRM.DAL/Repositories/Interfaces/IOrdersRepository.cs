@@ -6,5 +6,7 @@ namespace BookStoreCRM.DAL.Repositories.Interfaces
     {
         Task<Orders?> GetAllOrdersWithItemsAsync(Guid id);
         Task<List<Orders>> GetAllWithCustomerAsync();
+        Task<bool> CheckCustomerOrdersAsync(Guid Id);
+
     }
 }
