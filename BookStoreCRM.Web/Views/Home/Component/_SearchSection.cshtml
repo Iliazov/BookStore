@@ -1,0 +1,48 @@
+﻿<section class="hero-section">
+    <div class="container">
+        <div class="hero-content">
+            <span class="hero-eyebrow">
+                Твоя следующая история уже здесь
+            </span>
+
+            <h1>
+                Найдите книгу, которую захочется перечитать
+            </h1>
+
+            <p>
+                Классика, современная литература, детективы,
+                фэнтези и книги для саморазвития.
+            </p>
+
+            <form class="hero-search"
+                  asp-controller="Book"
+                  asp-action="Index"
+                  method="get">
+
+                <i class="bi bi-search"></i>
+
+                <input type="search"
+                       name="search"
+                       placeholder="Введите название книги или автора"
+                       aria-label="Поиск книги" />
+
+                <button type="submit">
+                    Найти книгу
+                </button>
+            </form>
+
+            <div class="hero-links">
+                <span>Популярное:</span>
+                <a href="#">Классика</a>
+                <a href="#">Фэнтези</a>
+                <a href="#">Детективы</a>
+            </div>
+        </div>
+
+        <div class="hero-decoration" aria-hidden="true">
+            <div class="hero-book hero-book--first"></div>
+            <div class="hero-book hero-book--second"></div>
+            <div class="hero-book hero-book--third"></div>
+        </div>
+    </div>
+</section>

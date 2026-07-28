@@ -1,0 +1,132 @@
+﻿<header class="site-header">
+    <div class="container">
+        <nav class="main-navbar">
+            <a class="site-logo"
+                asp-area=""
+                asp-controller="Home"
+                asp-action="Index">
+                <span class="site-logo__icon">B</span>
+                <span>BookStore</span>
+            </a>
+             <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#mainNavigation"
+                        aria-controls="mainNavigation"
+                        aria-expanded="false"
+                        aria-label="Open menu">
+                    <span class="navbar-toggler-icon"></span>
+             </button>
+
+             <div class="collapse navbar-collapse"
+                id="mainNavigation">
+                <ul class="main-menu">
+                    <li>
+                        <a asp-area=""
+                            asp-controller="Home"
+                            asp-action="Index">Home</a>
+                    </li>
+                    <li>
+                        <a asp-area=""
+                            asp-controller="Book"
+                            asp-action="Index">Catalogue</a>
+                    </li>
+                    <li>
+                        <a asp-area=""
+                            asp-controller="Category"
+                            asp-action="Index">Category</a>
+                    </li>
+                </ul>
+
+                <form class="header-search"
+                        asp-controller="Book"
+                        asp-action="Index"
+                        method="post">
+                    <input type="search"
+                            name="search"
+                            placeholder="Name of book or author..."
+                            aria-label="Search book"
+                            />
+                    <button type="submit" aria-label="Search"><i class="bi bi-search"></i></button>
+                </form>
+
+                <div class="header-actions">
+                    @if(User.Identity?.IsAuthenticated == true)
+                    {
+                        <a asp-controller="Wishlist"
+                           asp-action="Index"
+                           class="header-action"
+                           aria-label="Избранное">
+                            <i class="bi bi-heart"></i>
+                        </a>
+
+                        <a asp-controller="Cart"
+                           asp-action="Index"
+                           class="header-action"
+                           aria-label="Корзина">
+                            <i class="bi bi-bag"></i>
+                        </a>
+
+                        <div class="dropdown">
+                            <button class="profile-button dropdown-toggle"
+                                    type="button"
+                                    data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle"></i>
+                                <span>@User.Identity.Name</span>
+                            </button>
+
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Account"
+                                       asp-action="Profile">
+                                        Профиль
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Order"
+                                       asp-action="Index">
+                                        Мои заказы
+                                    </a>
+                                </li>
+
+                                <li><hr class="dropdown-divider" /></li>
+
+                                <li>
+                                    <form asp-controller="Account"
+                                          asp-action="Logout"
+                                          method="post">
+
+                                        @Html.AntiForgeryToken()
+
+                                        <button class="dropdown-item"
+                                                type="submit">
+                                            Выйти
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    }
+                    else
+                    {
+                        <a asp-controller="Account"
+                           asp-action="Login"
+                           class="login-link">
+                            Войти
+                        </a>
+
+                        <a asp-controller="Account"
+                           asp-action="Register"
+                           class="register-link">
+                            Регистрация
+                        </a>
+                    }
+                </div>
+
+             </div>
+        </nav>
+    </div>
+</header>

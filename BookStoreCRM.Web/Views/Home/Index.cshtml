@@ -1,8 +1,62 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿ @{
+      ViewData["Title"] = "Главная";
+  }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>This is User</a>.</p>
-</div>
+  <partial name="Component/_SearchSection" />
+  <partial name="Component/_CategorySection" />
+  <partial name="Component/_BookSection" />
+  
+
+  
+
+  <section class="quote-banner">
+      <div class="container">
+          <div class="quote-banner__content">
+              <i class="bi bi-quote"></i>
+
+              <blockquote>
+                  Хорошая книга — это разговор с человеком,
+                  который умеет рассказать важную историю.
+              </blockquote>
+
+              <a asp-controller="Book"
+                 asp-action="Index"
+                 class="banner-button">
+                  Перейти в каталог
+              </a>
+          </div>
+      </div>
+  </section>
+
+  <section class="home-section advantages-section">
+      <div class="container">
+          <div class="advantages-grid">
+              <div class="advantage-item">
+                  <i class="bi bi-book"></i>
+
+                  <div>
+                      <h3>Большой выбор</h3>
+                      <p>Книги разных авторов и жанров.</p>
+                  </div>
+              </div>
+
+              <div class="advantage-item">
+                  <i class="bi bi-shield-check"></i>
+
+                  <div>
+                      <h3>Удобная покупка</h3>
+                      <p>Простое и безопасное оформление заказа.</p>
+                  </div>
+              </div>
+
+              <div class="advantage-item">
+                  <i class="bi bi-heart"></i>
+
+                  <div>
+                      <h3>Избранные книги</h3>
+                      <p>Сохраняйте интересные книги на будущее.</p>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>

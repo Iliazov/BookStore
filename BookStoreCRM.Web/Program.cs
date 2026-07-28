@@ -73,8 +73,8 @@ namespace BookStoreCRM.Web
             {
                 options.LoginPath = "/Account/Login";
                 options.AccessDeniedPath = "/Account/AccessDenied";
-                //options.Cookie.HttpOnly = true;
-                //options.SlidingExpiration = true;
+                options.Cookie.HttpOnly = true;
+                options.SlidingExpiration = true;
             });
 
             var app = builder.Build();

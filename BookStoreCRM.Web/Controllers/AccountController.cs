@@ -65,11 +65,11 @@ namespace BookStoreCRM.Web.Controllers
             {
                 return RedirectToAction(
                     "Index",
-                    "Home",
+                    "Dashboard",
                     new { area = "Admin" });
             }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(Index), "Home");
         }
        
         [HttpPost]

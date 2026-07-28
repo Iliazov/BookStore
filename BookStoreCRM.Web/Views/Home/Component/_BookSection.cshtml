@@ -1,0 +1,96 @@
+﻿<section class="home-section books-section">
+    <div class="container">
+        <div class="section-header">
+            <div>
+                <span class="section-eyebrow">Свежие поступления</span>
+                <h2>Новые книги</h2>
+            </div>
+
+            <a asp-controller="Book"
+               asp-action="Index"
+               class="section-link">
+                Смотреть все
+                <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="book-grid">
+            @*
+                  Здесь позже будет foreach:
+
+                  @foreach (var book in Model.NewBooks)
+                  {
+                      карточка книги
+                  }
+              *@
+
+            <article class="book-card">
+                <div class="book-card__image">
+                    <span class="book-badge">Новинка</span>
+
+                    <img src="~/images/book-placeholder.jpg"
+                         alt="Название книги" />
+
+                    <button class="wishlist-button"
+                            type="button"
+                            aria-label="Добавить в избранное">
+                        <i class="bi bi-heart"></i>
+                    </button>
+                </div>
+
+                <div class="book-card__content">
+                    <a href="#" class="book-category">
+                        Художественная литература
+                    </a>
+
+                    <h3>
+                        <a href="#">Название книги</a>
+                    </h3>
+
+                    <p class="book-author">Имя автора</p>
+
+                    <div class="book-card__footer">
+                        <strong class="book-price">1 200 сом</strong>
+
+                        <button class="add-to-cart-button"
+                                type="button"
+                                aria-label="Добавить в корзину">
+                            <i class="bi bi-bag-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="book-card">
+                <div class="book-card__image">
+                    <img src="~/images/book-placeholder.jpg"
+                         alt="Название книги" />
+
+                    <button class="wishlist-button"
+                            type="button"
+                            aria-label="Добавить в избранное">
+                        <i class="bi bi-heart"></i>
+                    </button>
+                </div>
+
+                <div class="book-card__content">
+                    <a href="#" class="book-category">Классика</a>
+
+                    <h3>
+                        <a href="#">Название второй книги</a>
+                    </h3>
+
+                    <p class="book-author">Имя автора</p>
+
+                    <div class="book-card__footer">
+                        <strong class="book-price">950 сом</strong>
+
+                        <button class="add-to-cart-button" type="button">
+                            <i class="bi bi-bag-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
