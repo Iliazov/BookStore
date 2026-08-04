@@ -47,10 +47,21 @@ namespace BookStoreCRM.Web.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? search, int page = 1)
         {
-            var books = await _bookService.GetAllBooksAsync();
-            var model = _mapper.Map<List<BookItemViewModel>>(books);
+            const int pageSize = 5;
+            page = page < 1 ? 1 : page;
+            var books = await _bookService.GetAllBooksAsync(
+                search,
+                page,
+                pageSize);
+            var model = new BookIndexViewModel
+            {
+                Books = _mapper.Map<List<BookItemViewModel>>(books.Books),
+                Search = search,
+                CurrentPage = page,
+                TotalPages = (int)Math.Ceiling((double)books.PageSize / pageSize)
+            };
             return View(model);
         }
 
@@ -70,6 +81,7 @@ namespace BookStoreCRM.Web.Areas.Admin.Controllers
             
             if (!_fileValidator.Validate(file, nameof(model.Image), ModelState))
             {
+                await LoadCategories(model);
                 return View(model);
             }
 

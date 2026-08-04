@@ -24,10 +24,17 @@ namespace BookStoreCRM.Web.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            var categories = await _categoryService.GetCategoriesAsync();
-            var model = _mapper.Map<List<CategoryViewModel>>(categories);
+            const int pageSize = 5;
+            page = page < 1 ? 1 : page;
+            var categories = await _categoryService.GetCategoriesAsync(page, pageSize);
+            var model = new CategoryIndexViewModel
+            {
+                Categories = _mapper.Map<List<CategoryViewModel>>(categories.Categories),
+                CurrentPage = page,
+                TotalPages = (int)Math.Ceiling((double)categories.totalCount / pageSize),
+            };
             return View(model);
         }
 

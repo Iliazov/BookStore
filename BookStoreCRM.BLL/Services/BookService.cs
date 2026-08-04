@@ -38,6 +38,26 @@ namespace BookStoreCRM.BLL.Services
             await _unitOfWork.Save();
         }
 
+        public async Task<(List<BookDTO> Books, int PageSize)> GetAllBooksAsync(
+            string? search,
+            int page,
+            int pageSize)
+        {
+            var query = _unitOfWork.BooksRepository.Get();
+            if (!string.IsNullOrWhiteSpace(search)){
+                query = query.Where(b =>
+                    b.Title.Contains(search) ||
+                    b.Author.Contains(search));
+            }
+            var totalCount = await query.CountAsync();
+            var books = await query
+                .OrderBy(b => b.Title)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            return (_mapper.Map<List<BookDTO>>(books), totalCount);
+        }
+
         public async Task<List<BookDTO>> GetAllBooksAsync()
         {
             var books = await _unitOfWork.BooksRepository.Get().ToListAsync();

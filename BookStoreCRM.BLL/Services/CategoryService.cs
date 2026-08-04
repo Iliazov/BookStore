@@ -31,6 +31,12 @@ namespace BookStoreCRM.BLL.Services
         {
             var category = await _unitOfWork.CategoryRepository.GetByIdAsync(id)
                 ?? throw new NotFoundException("Category not found");
+            bool isExists = await _unitOfWork.BooksRepository
+                .Get()
+                .AnyAsync(b => b.CategoryId == id);
+            if (isExists) {
+                throw new InvalidOperationException("You can not delete this category, this category has books.");
+            }
             _unitOfWork.CategoryRepository.Delete(category);
             await _unitOfWork.Save();
         }
@@ -39,6 +45,25 @@ namespace BookStoreCRM.BLL.Services
         {
             var category = await _unitOfWork.CategoryRepository.GetByIdAsync(id);
             return _mapper.Map<CategoryDTO>(category);
+        }
+
+        public async Task<(List<CategoryDTO> Categories, int totalCount)> GetCategoriesAsync(int? page, int? pageSize)
+        {
+            var query = _unitOfWork.CategoryRepository.Get();
+            int totalCount = await query.CountAsync();
+
+            if (page.HasValue && pageSize.HasValue)
+            {
+                var booksWithPagination = await query
+                .OrderBy(c => c.Name)
+                .Skip((page.Value - 1) * 5)
+                .Take(pageSize.Value)
+                .ToListAsync();
+
+                return (_mapper.Map<List<CategoryDTO>>(booksWithPagination), totalCount);
+            }
+            var books = await query.ToListAsync();
+            return (_mapper.Map<List<CategoryDTO>>(books), totalCount);
         }
 
         public async Task<List<CategoryDTO>> GetCategoriesAsync()

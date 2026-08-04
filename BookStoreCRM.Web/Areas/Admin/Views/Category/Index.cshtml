@@ -1,4 +1,4 @@
-﻿@model List<BookStoreCRM.Web.Areas.Admin.ViewModels.Category.CategoryViewModel>
+﻿@model BookStoreCRM.Web.Areas.Admin.ViewModels.Category.CategoryIndexViewModel
 @{
 	ViewData["Title"] = "Categories";
 }
@@ -20,7 +20,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach(var category in Model)
+				@foreach(var category in Model.Categories)
 				{
 					<tr class="cursor:pointer"
 						onclick="location.href='@Url.Action("CategoryDetail", "Category", new {area = "Admin", id=category.Id})'">
@@ -44,5 +44,34 @@
 				}
 			</tbody>
 		</table>
+		<div class="d-flex flex-column align-items-center mt-3">
+			<div class="d-flex gap-2">
+				@if (Model.HasPreviousPage)
+				{
+					<a asp-controller="Category"
+						asp-action="Index"
+						asp-route-page="@(Model.CurrentPage-1)"
+					class="btn btn-outline-primary">Previous</a>
+				}
+				else
+				{
+					<button class="btn btn-outline-secondary" disabled>Previous</button>
+				}
+				@if (Model.HasNextPage)
+				{
+					<a asp-controller="Category"
+						asp-action="Index"
+						asp-route-page="@(Model.CurrentPage + 1)"
+					class="btn btn-outline-primary">Next</a>
+				}
+				else
+				{
+					<button class="btn btn-outline-secondary" disabled>Next</button>
+				}
+			</div>
+			<div class="mt-2 text-muted">
+				Page @Model.CurrentPage out of @Model.TotalPages
+			</div>
+		</div>
 	</div>
 </div>

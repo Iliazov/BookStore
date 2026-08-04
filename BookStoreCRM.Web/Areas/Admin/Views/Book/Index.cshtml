@@ -1,4 +1,4 @@
-﻿@model List<BookStoreCRM.Web.Areas.Admin.ViewModels.Book.BookItemViewModel>
+﻿@model BookStoreCRM.Web.Areas.Admin.ViewModels.Book.BookIndexViewModel;
 @{
 	ViewData["Title"] = "Books";
 }
@@ -6,15 +6,18 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
 	<h2>Books</h2>
 
-		<form class="admin-search"
+		<form class="d-flex gap-2"
 			  asp-controller="Book"
 			  asp-action="Index"
-			  method="post">
+			  method="get">
 			<input type="search"
+				   id="bookSearch"
 				   name="search"
+				   value="@Model.Search"
 				   placeholder="Name of book or author..."
-				   aria-label="Search book" />
-			<button type="submit" aria-label="Search"><i class="bi bi-search"></i></button>
+				   aria-label="Search book"
+				   class="form-control" />
+			<button type="submit" class="btn btn-primary">Search</button>
 		</form>
 
 	<a asp-action="Create" class="btn btn-primary">Create Book</a>
@@ -31,8 +34,8 @@
 					<th style="width:180px">Actions</th>
 				</tr>
 			</thead>
-			<tbody>
-				@foreach (var book in Model)
+			<tbody id="bookTableBody">
+				@foreach (var book in Model.Books)
 				{
 					<tr class="cursor:pointer"
 						onclick="location.href='@Url.Action("BookDetail", "Book", new { area = "Admin", id = book.Id })'">
@@ -67,6 +70,37 @@
 				}
 			</tbody>
 		</table>
+		<div class="d-flex flex-column align-items-center mt-3">
+			
+			<div class="d-flex gap-2">
+				@if (Model.HasPreviousPage)
+				{
+					<a asp-action="Index"
+						asp-route-page="@(Model.CurrentPage-1)"
+						asp-route-search="@Model.Search"
+					class="btn btn-outline-primary">Previous</a>
+				}else
+				{
+                    <button class="btn btn-outline-secondary" disabled>Previous</button>
+				}
+				@if (Model.HasNextPage)
+				{
+					<a asp-action="Index"
+					asp-route-page="@(Model.CurrentPage + 1)"
+					asp-route-search="@Model.Search"
+					class="btn btn-outline-primary">Next</a>
+				}
+				else
+				{
+                    <button class="btn btn-outline-secondary" disabled>Next</button>
+				}
+			</div>
+			<div class="mt-2 text-muted">
+				Page @Model.CurrentPage of @Model.TotalPages
+			</div>
+		</div>
 	</div>
 </div>
 
+<script src="~/js/book/bookSearch.js"
+		asp-append-version="true"></script>
