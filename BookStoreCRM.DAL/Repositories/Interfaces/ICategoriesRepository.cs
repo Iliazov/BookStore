@@ -2,7 +2,7 @@
 
 namespace BookStoreCRM.DAL.Repositories.Interfaces
 {
-    public interface ICategoriesRepository : IGenericRepository<Categories>
+    public interface ICategoriesRepository : IGenericRepository<Category>
     {
     }
 }

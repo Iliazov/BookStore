@@ -5,12 +5,14 @@ using BookStoreCRM.BLL.DTOs.Category;
 using BookStoreCRM.BLL.DTOs.Dashboard;
 using BookStoreCRM.BLL.DTOs.Order;
 using BookStoreCRM.BLL.DTOs.Review;
+using BookStoreCRM.BLL.DTOs.SubCategory;
 using BookStoreCRM.BLL.DTOs.User;
 using BookStoreCRM.Web.Areas.Admin.ViewModels.Book;
 using BookStoreCRM.Web.Areas.Admin.ViewModels.Category;
 using BookStoreCRM.Web.Areas.Admin.ViewModels.Dashboard;
 using BookStoreCRM.Web.Areas.Admin.ViewModels.Order;
 using BookStoreCRM.Web.Areas.Admin.ViewModels.Review;
+using BookStoreCRM.Web.Areas.Admin.ViewModels.SubCategory;
 using BookStoreCRM.Web.Areas.Admin.ViewModels.User;
 using BookStoreCRM.Web.Models.Account;
 
@@ -30,6 +32,11 @@ namespace BookStoreCRM.Web.Mapping
             CreateMap<CreateCategoryViewModel, CreateCategoryDTO>();
             CreateMap<CategoryDTO, UpdateCategoryViewModel>();
             CreateMap<UpdateCategoryViewModel, UpdateCategoryDTO>();
+            CreateMap<CategoryWithSubCategoryDTO, CategoryWithSubCategoryViewModel>();
+
+            CreateMap<SubCategoryFormViewModel, CreateSubCategoryDTO>();
+            CreateMap<SubCategoryDTO, SubCategoryViewModel>();
+            CreateMap<SubCategoryViewModel, SubCategoryDTO>();
 
             CreateMap<RegisterViewModel, RegisterDTO>();
 

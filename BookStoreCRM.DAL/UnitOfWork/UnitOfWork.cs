@@ -15,6 +15,7 @@ namespace BookStoreCRM.DAL.UnitOfWork
         private IApplicationUserRepository? _usersRepository;
         private IFriendRequestRepository? _friendRequestsRepository;
         private IWishlistsRepository? _wishlistsRepository;
+        private ISubCategoryRepository? _subCategoryRepository;
 
         public UnitOfWork(AppDbContext context)
         {
@@ -45,6 +46,8 @@ namespace BookStoreCRM.DAL.UnitOfWork
         public IWishlistsRepository WishlistsRepository =>
             _wishlistsRepository ??= new WishlistsRepository(_context);
 
+        public ISubCategoryRepository SubCategoryRepository =>
+            _subCategoryRepository ??= new SubCategoryRepository(_context);
 
         public async Task Save()
         {

@@ -2,8 +2,7 @@
 
 namespace BookStoreCRM.DAL.Repositories.Interfaces
 {
-    public interface IWishlistsRepository : IGenericRepository<Wishlists>
+    public interface IWishlistsRepository : IGenericRepository<Wishlist>
     {
-
     }
 }

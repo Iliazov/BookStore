@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BookStoreCRM.DAL.Configuration
 {
-    public class OrdersConfiguration : IEntityTypeConfiguration<Orders>
+    public class OrdersConfiguration : IEntityTypeConfiguration<Order>
     {
-        public void Configure(EntityTypeBuilder<Orders> builder)
+        public void Configure(EntityTypeBuilder<Order> builder)
         {
-            builder.ToTable(nameof(Orders));
+            builder.ToTable(nameof(Order));
             builder.HasKey(o => o.Id);
 
             builder.Property(o => o.TotalPrice)

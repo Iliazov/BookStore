@@ -8,7 +8,6 @@ using BookStoreCRM.DAL.Repositories.Interfaces;
 using BookStoreCRM.DAL.UnitOfWork;
 using BookStoreCRM.Domain.Entities;
 using BookStoreCRM.Web.Mapping;
-using BookStoreCRM.Web.Middlewares;
 using BookStoreCRM.Web.Seed;
 using BookStoreCRM.Web.Services;
 using BookStoreCRM.Web.Services.Interfaces;
@@ -32,6 +31,7 @@ namespace BookStoreCRM.Web
             builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
             builder.Services.AddScoped<IReviewsRepository, ReviewsRepository>();
             builder.Services.AddScoped<IWishlistsRepository, WishlistsRepository>();
+            builder.Services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IFileValidator, FileValidator>();
@@ -44,7 +44,7 @@ namespace BookStoreCRM.Web
             builder.Services.AddScoped<IReviewService, ReviewService>();
             builder.Services.AddScoped<IDashboardService, DashboardService>();
             builder.Services.AddScoped<IUserService, UserService>();
-
+            builder.Services.AddScoped<ISubCategoryService, SubCategoryService>();
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<AppDbContext>(options =>
@@ -57,7 +57,7 @@ namespace BookStoreCRM.Web
                 typeof(MappingProfile),
                 typeof(WebMappingProfile));
             builder.Services
-            .AddIdentity<ApplicationUsers, IdentityRole<Guid>>(options =>
+            .AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
             {
                 options.Password.RequireDigit = true;
                 options.Password.RequireUppercase = true;
@@ -80,10 +80,11 @@ namespace BookStoreCRM.Web
             var app = builder.Build();
             app.UseExceptionHandler("/Error");
             app.UseStatusCodePagesWithReExecute("/Error/{0}");
+
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-                var userManager = services.GetRequiredService<UserManager<ApplicationUsers>>();
+                var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                 var roleManager = services.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 
                 await IdentitySeeder.SeedAsync(userManager, roleManager);

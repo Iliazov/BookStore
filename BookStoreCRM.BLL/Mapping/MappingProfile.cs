@@ -4,6 +4,7 @@ using BookStoreCRM.BLL.DTOs.Category;
 using BookStoreCRM.BLL.DTOs.Order;
 using BookStoreCRM.BLL.DTOs.Review;
 using BookStoreCRM.BLL.DTOs.User;
+using BookStoreCRM.BLL.DTOs.SubCategory;
 using BookStoreCRM.Domain.Entities;
 namespace BookStoreCRM.BLL.Mapping
 {
@@ -11,33 +12,39 @@ namespace BookStoreCRM.BLL.Mapping
     {
         public MappingProfile()
         {
-            CreateMap<Books, BookDTO>();
-            CreateMap<CreateBookDTO, Books>();
-            CreateMap<UpdateBookDTO, Books>();
-            CreateMap<Books, BookDetailsDTO>()
+            CreateMap<Book, BookDTO>();
+            CreateMap<CreateBookDTO, Book>();
+            CreateMap<UpdateBookDTO, Book>();
+            CreateMap<Book, BookDetailsDTO>()
                 .ForMember(
                     dest => dest.CategoryName,
                     opt => opt.MapFrom(src => src.Category.Name)
                 );
 
-            CreateMap<Categories, CategoryDTO>();
-            CreateMap<CreateCategoryDTO, Categories>();
-            CreateMap<UpdateCategoryDTO, Categories>();
+            CreateMap<Category, CategoryDTO>();
+            CreateMap<CreateCategoryDTO, Category>();
+            CreateMap<UpdateCategoryDTO, Category>();
 
-            CreateMap<Orders, OrderDTO>()
+            CreateMap<CreateSubCategoryDTO, SubCategory>();
+            CreateMap<SubCategory, SubCategoryDTO>();
+            CreateMap<SubCategoryDTO, SubCategory>();
+            CreateMap<Category, CategoryWithSubCategoryDTO>();
+
+
+            CreateMap<Order, OrderDTO>()
                 .ForMember(
                     dest => dest.CustomerName,
                     opt => opt.MapFrom(src =>
                     $"{src.Customer.FirstName} {src.Customer.LastName}"));
 
-            CreateMap<Orders, OrderDetailsDTO>()
+            CreateMap<Order, OrderDetailsDTO>()
                 .ForMember(
                     dest => dest.CustomerName,
                     opt => opt.MapFrom(src =>
                         $"{src.Customer.FirstName} {src.Customer.LastName}"
                     )
                 );
-            CreateMap<OrderItems, OrderItemsDTO>()
+            CreateMap<OrderItem, OrderItemsDTO>()
                 .ForMember(
                     dest => dest.Image,
                     opt => opt.MapFrom(src => src.Book.ImageUrl))
@@ -45,7 +52,7 @@ namespace BookStoreCRM.BLL.Mapping
                     dest => dest.Book,
                     opt => opt.MapFrom(src => src.Book.Title));
 
-            CreateMap<Reviews, ReviewsDTO>()
+            CreateMap<Review, ReviewsDTO>()
                 .ForMember(
                     dest => dest.CustomerName,
                     opt => opt.MapFrom(src => $"{src.User.FirstName} {src.User.LastName}")
@@ -54,7 +61,7 @@ namespace BookStoreCRM.BLL.Mapping
                     dest => dest.BookTitle,
                     opt => opt.MapFrom(src => src.Book.Title)
                 );
-            CreateMap<Reviews, ReviewDetailsDTO>()
+            CreateMap<Review, ReviewDetailsDTO>()
                 .ForMember(
                     dest => dest.CustomerName,
                     opt => opt.MapFrom(src => $"{src.User.FirstName} {src.User.LastName}")
@@ -67,9 +74,9 @@ namespace BookStoreCRM.BLL.Mapping
                     dest => dest.BookImage,
                     opt => opt.MapFrom(src => src.Book.ImageUrl));
 
-            CreateMap<ApplicationUsers, UserDTO>();
-            CreateMap<ApplicationUsers, UserDetailsDTO>();
-            CreateMap<ApplicationUsers, UpdateUserDTO>();
+            CreateMap<ApplicationUser, UserDTO>();
+            CreateMap<ApplicationUser, UserDetailsDTO>();
+            CreateMap<ApplicationUser, UpdateUserDTO>();
 
         }
     }

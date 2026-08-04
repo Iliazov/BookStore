@@ -12,12 +12,12 @@ namespace BookStoreCRM.BLL.Services
     public class UserService : IUserService
     {
         private readonly IMapper _mapper;
-        private readonly UserManager<ApplicationUsers> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
         private readonly IUnitOfWork _unitOfWork;
         public UserService(
             IMapper mapper,
-            UserManager<ApplicationUsers> userManager,
+            UserManager<ApplicationUser> userManager,
             IUnitOfWork unitOfWork,
             RoleManager<IdentityRole<Guid>> roleManager) 
         {
@@ -35,7 +35,9 @@ namespace BookStoreCRM.BLL.Services
             }
             var user = await _userManager.FindByIdAsync(id.ToString()) 
                 ?? throw new NotFoundException("User not found");
-            var hasOrders = await _unitOfWork.OrdersRepository.CheckCustomerOrdersAsync(user.Id);
+            var hasOrders = await _unitOfWork.OrdersRepository
+                .Get()
+                .AnyAsync(o  => o.CustomerId == id);
             if (hasOrders)
             {
                 throw new ConflictException("This user cannot be deleted because they have existing orders.");

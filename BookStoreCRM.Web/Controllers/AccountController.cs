@@ -11,14 +11,14 @@ namespace BookStoreCRM.Web.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly SignInManager<ApplicationUsers> _signInManager;
-        private readonly UserManager<ApplicationUsers> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IAccountService _accountService;
         private readonly IMapper _mapper;
 
         public AccountController(
-            SignInManager<ApplicationUsers> signInManager,
-            UserManager<ApplicationUsers> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            UserManager<ApplicationUser> userManager,
             IMapper mapper,
             IAccountService service)
         {

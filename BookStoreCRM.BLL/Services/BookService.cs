@@ -4,6 +4,7 @@ using BookStoreCRM.BLL.Exceptions;
 using BookStoreCRM.BLL.Interfaces;
 using BookStoreCRM.DAL.UnitOfWork;
 using BookStoreCRM.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookStoreCRM.BLL.Services
 {
@@ -21,7 +22,7 @@ namespace BookStoreCRM.BLL.Services
 
         public async Task CreateBookAsync(CreateBookDTO bookDTO)
         {
-            var book = _mapper.Map<Books>(bookDTO);
+            var book = _mapper.Map<Book>(bookDTO);
             await _unitOfWork.BooksRepository.AddAsync(book);
             await _unitOfWork.Save();
         }
@@ -39,7 +40,7 @@ namespace BookStoreCRM.BLL.Services
 
         public async Task<List<BookDTO>> GetAllBooksAsync()
         {
-            var books = await _unitOfWork.BooksRepository.CheckCustomerOrdersAsync();
+            var books = await _unitOfWork.BooksRepository.Get().ToListAsync();
             return _mapper.Map<List<BookDTO>>(books);
         }
 
@@ -53,9 +54,13 @@ namespace BookStoreCRM.BLL.Services
 
         public async Task<BookDetailsDTO> GetBookWithCategoryAsync(Guid id)
         {
-            var book = await _unitOfWork.BooksRepository.GetBookWithCategoryAsync(id);
-            if (book == null)
-                throw new NotFoundException("Book not found!");
+            var book = await _unitOfWork.BooksRepository
+                .Get()
+                .Where(b => b.Id == id)
+                .Include(b => b.SubCategory)
+                .FirstOrDefaultAsync(b => b.Id == id)
+                ?? throw new NotFoundException("Book not found.");
+           
             return _mapper.Map<BookDetailsDTO>(book);
         }
 

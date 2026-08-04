@@ -17,6 +17,7 @@ namespace BookStoreCRM.Web.Areas.Admin.Controllers
     {
         private readonly IBookService _bookService;
         private readonly ICategoryService _categoryService;
+        private readonly ISubCategoryService _subCategoryService;
         private readonly IFileService _fileService;
         private readonly IMapper _mapper;
         private readonly IFileValidator _fileValidator;
@@ -25,6 +26,7 @@ namespace BookStoreCRM.Web.Areas.Admin.Controllers
             IMapper mapper,
             IFileService fileService,
             ICategoryService categoryService,
+            ISubCategoryService subCategoryService,
             IFileValidator fileValidator)
         {
             _bookService = bookService;
@@ -32,6 +34,7 @@ namespace BookStoreCRM.Web.Areas.Admin.Controllers
             _fileService = fileService;
             _categoryService = categoryService;
             _fileValidator = fileValidator;
+            _subCategoryService = subCategoryService;
         }
 
         [HttpGet]
@@ -73,6 +76,7 @@ namespace BookStoreCRM.Web.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 await LoadCategories(model);
+                return View(model);
             }
 
             string? imagePath = null;
@@ -80,7 +84,7 @@ namespace BookStoreCRM.Web.Areas.Admin.Controllers
             if (file is not null)
             {
                 using var stream = file.OpenReadStream();
-                imagePath = await _fileService.UploadFile(stream, file.FileName, FileFolders.Books);
+                imagePath = await _fileService.UploadFile(stream, file.FileName, FileConstants.Books);
                 
             }
 
@@ -131,7 +135,7 @@ namespace BookStoreCRM.Web.Areas.Admin.Controllers
                 model.ImageUrl = await _fileService.UploadFile(
                     stream,
                     model.NewImageUrl.FileName,
-                    FileFolders.Books);
+                    FileConstants.Books);
             }
            
             var bookDto = _mapper.Map<UpdateBookDTO>(model);
@@ -161,6 +165,17 @@ namespace BookStoreCRM.Web.Areas.Admin.Controllers
                 Value = c.Id.ToString(),
                 Text = c.Name
             }).ToList();
+
+            model.SubCategories = new List<SelectListItem>();
+            if(model.CategoryId != Guid.Empty)
+            {
+                var subCategories = await _subCategoryService.GetByCategoryIdAsync(model.CategoryId);
+                model.SubCategories = subCategories.Select(s => new SelectListItem
+                {
+                    Value = s.Id.ToString(),
+                    Text = s.Name
+                }).ToList();
+            }
         }
     }
 }

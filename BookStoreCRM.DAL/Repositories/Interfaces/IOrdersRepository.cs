@@ -2,11 +2,8 @@
 
 namespace BookStoreCRM.DAL.Repositories.Interfaces
 {
-    public interface IOrdersRepository : IGenericRepository<Orders>
+    public interface IOrdersRepository : IGenericRepository<Order>
     {
-        Task<Orders?> GetAllOrdersWithItemsAsync(Guid id);
-        Task<List<Orders>> GetAllWithCustomerAsync();
-        Task<bool> CheckCustomerOrdersAsync(Guid Id);
 
     }
 }

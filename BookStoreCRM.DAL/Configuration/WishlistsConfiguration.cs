@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BookStoreCRM.DAL.Configuration
 {
-    public class WishlistsConfiguration : IEntityTypeConfiguration<Wishlists>
+    public class WishlistsConfiguration : IEntityTypeConfiguration<Wishlist>
     {
-        public void Configure(EntityTypeBuilder<Wishlists> builder)
+        public void Configure(EntityTypeBuilder<Wishlist> builder)
         {
-            builder.ToTable(nameof(Wishlists));
+            builder.ToTable(nameof(Wishlist));
             builder.HasKey(w => w.Id);
 
             builder.HasOne(w => w.User)

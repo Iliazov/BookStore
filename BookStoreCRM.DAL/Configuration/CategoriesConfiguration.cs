@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BookStoreCRM.DAL.Configuration
 {
-    public class CategoriesConfiguration : IEntityTypeConfiguration<Categories>
+    public class CategoriesConfiguration : IEntityTypeConfiguration<Category>
     {
-        public void Configure(EntityTypeBuilder<Categories> builder)
+        public void Configure(EntityTypeBuilder<Category> builder)
         {
-            builder.ToTable(nameof(Categories));
+            builder.ToTable(nameof(Category));
             builder.HasKey(c => c.Id);
 
             builder.Property(c => c.Name)
@@ -18,7 +18,7 @@ namespace BookStoreCRM.DAL.Configuration
             builder.Property(c => c.Description)
                    .HasMaxLength(500);
 
-            builder.HasMany(c => c.Books)
+            builder.HasMany(c => c.SubCategories)
                    .WithOne(b => b.Category)
                    .HasForeignKey(c => c.CategoryId)
                    .OnDelete(DeleteBehavior.Restrict);

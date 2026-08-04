@@ -2,7 +2,7 @@
 
 namespace BookStoreCRM.DAL.Repositories.Interfaces
 {
-    public interface IApplicationUserRepository : IGenericRepository<ApplicationUsers>
+    public interface IApplicationUserRepository : IGenericRepository<ApplicationUser>
     {
 
     }

@@ -5,16 +5,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookStoreCRM.DAL.Context
 {
-    public class AppDbContext: IdentityDbContext<ApplicationUsers, IdentityRole<Guid>, Guid>
+    public class AppDbContext: IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-        DbSet<Books> Books { get; set; }
-        DbSet<Orders> Orders { get; set; }
-        DbSet<OrderItems> Items { get; set; }
-        DbSet<Categories> Categories { get; set; }
-        DbSet<Reviews> Reviews { get; set; }
-        DbSet<Wishlists> Wishlists { get; set; }
-        DbSet<FriendRequests> FriendRequests { get; set; }
+        DbSet<Book> Books { get; set; }
+        DbSet<Order> Orders { get; set; }
+        DbSet<OrderItem> Items { get; set; }
+        DbSet<Category> Categories { get; set; }
+        DbSet<Review> Reviews { get; set; }
+        DbSet<Wishlist> Wishlists { get; set; }
+        DbSet<FriendRequest> FriendRequests { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

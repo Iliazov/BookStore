@@ -15,11 +15,6 @@ namespace BookStoreCRM.DAL.Repositories.Implementation
             _dbSet = context.Set<TEntity>();
         }
 
-        public virtual async Task<List<TEntity>> CheckCustomerOrdersAsync()
-        {
-            return await _dbSet.ToListAsync();
-        }
-
         public virtual async Task AddAsync(TEntity entity)
         {
             await _dbSet.AddAsync(entity);
@@ -38,6 +33,11 @@ namespace BookStoreCRM.DAL.Repositories.Implementation
         public virtual void Update(TEntity entity)
         {
             _dbSet.Update(entity);
+        }
+
+        public IQueryable<TEntity> Get(bool tracking = false)
+        {
+            return tracking ? _dbSet : _dbSet.AsNoTracking();
         }
     }
 }

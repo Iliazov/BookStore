@@ -23,6 +23,10 @@ namespace BookStoreCRM.Web.Areas.Admin.ViewModels.Book
         [Display(Name = "Category")]
         public Guid CategoryId { get; set; }
 
+        [Display(Name = "Sub Category")]
+        public Guid? SubCategoryId { get; set; }
+
         public List<SelectListItem> Categories { get; set; } = new List<SelectListItem>();
+        public List<SelectListItem> SubCategories { get; set; } = new List<SelectListItem>();
     }
 }

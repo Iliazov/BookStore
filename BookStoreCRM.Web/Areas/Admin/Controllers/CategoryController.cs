@@ -32,6 +32,14 @@ namespace BookStoreCRM.Web.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> CategoryDetail(Guid id)
+        {
+            var category = await _categoryService.GetWithSubCategoryByIdAsync(id);
+            var model = _mapper.Map<CategoryWithSubCategoryViewModel>(category);
+            return View(model);
+        }
+
+        [HttpGet]
         public IActionResult Create()
         {
             var model = new CreateCategoryViewModel();

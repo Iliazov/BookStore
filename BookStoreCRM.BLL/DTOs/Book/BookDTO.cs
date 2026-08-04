@@ -1,6 +1,4 @@
-﻿using BookStoreCRM.Domain.Entities;
-
-namespace BookStoreCRM.BLL.DTOs.Book
+﻿namespace BookStoreCRM.BLL.DTOs.Book
 {
     public class BookDTO
     {
@@ -11,5 +9,6 @@ namespace BookStoreCRM.BLL.DTOs.Book
         public decimal Price { get; set; }
         public string? ImageUrl { get; set; }
         public Guid CategoryId { get; set; }
+        public Guid? SubCategoryId { get; set; }
     }
 }

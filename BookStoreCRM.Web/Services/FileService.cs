@@ -13,10 +13,10 @@ public class FileService : IFileService
 
     public async Task<string> UploadFile(Stream stream, string fileName, string folderName)
     {
-        if(stream is null)
+        if (stream is null)
             throw new ArgumentNullException(nameof(stream));
 
-        if(string.IsNullOrWhiteSpace(fileName))
+        if (string.IsNullOrWhiteSpace(fileName))
             throw new ArgumentException(
                 "File name can not be empty", nameof(fileName));
 
@@ -25,8 +25,7 @@ public class FileService : IFileService
             FileConstants.UploadFolder, 
             folderName);
 
-        if (!Directory.Exists(uploadFolder))
-        {
+        if (!Directory.Exists(uploadFolder)){
             Directory.CreateDirectory(uploadFolder);
         }
         var extension = Path.GetExtension(fileName)

@@ -7,7 +7,7 @@ namespace BookStoreCRM.Web.Seed
     public static class IdentitySeeder
     {
         public static async Task SeedAsync(
-            UserManager<ApplicationUsers> userManager,
+            UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole<Guid>> roleManager)
         {
             var roles = new[]
@@ -33,7 +33,7 @@ namespace BookStoreCRM.Web.Seed
             var admin = await userManager.FindByEmailAsync(adminEmail);
             if(admin is null)
             {
-                admin = new ApplicationUsers
+                admin = new ApplicationUser
                 {
                     UserName = adminEmail,
                     Email = adminEmail,

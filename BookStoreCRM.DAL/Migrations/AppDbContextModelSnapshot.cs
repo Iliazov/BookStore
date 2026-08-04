@@ -22,7 +22,7 @@ namespace BookStoreCRM.DAL.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BookStoreCRM.Domain.Entities.ApplicationUsers", b =>
+            modelBuilder.Entity("BookStoreCRM.Domain.Entities.ApplicationUser", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -96,10 +96,10 @@ namespace BookStoreCRM.DAL.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("ApplicationUsers", (string)null);
+                    b.ToTable("ApplicationUser", (string)null);
                 });
 
-            modelBuilder.Entity("BookStoreCRM.Domain.Entities.Books", b =>
+            modelBuilder.Entity("BookStoreCRM.Domain.Entities.Book", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -112,6 +112,9 @@ namespace BookStoreCRM.DAL.Migrations
                     b.Property<Guid>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -122,6 +125,9 @@ namespace BookStoreCRM.DAL.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<Guid?>("SubCategoryId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -130,10 +136,12 @@ namespace BookStoreCRM.DAL.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Books", (string)null);
+                    b.HasIndex("SubCategoryId");
+
+                    b.ToTable("Book", (string)null);
                 });
 
-            modelBuilder.Entity("BookStoreCRM.Domain.Entities.Categories", b =>
+            modelBuilder.Entity("BookStoreCRM.Domain.Entities.Category", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -143,6 +151,9 @@ namespace BookStoreCRM.DAL.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<bool>("IsPopular")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -150,10 +161,10 @@ namespace BookStoreCRM.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Category", (string)null);
                 });
 
-            modelBuilder.Entity("BookStoreCRM.Domain.Entities.FriendRequests", b =>
+            modelBuilder.Entity("BookStoreCRM.Domain.Entities.FriendRequest", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -177,10 +188,35 @@ namespace BookStoreCRM.DAL.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("FriendRequests", (string)null);
+                    b.ToTable("FriendRequest", (string)null);
                 });
 
-            modelBuilder.Entity("BookStoreCRM.Domain.Entities.OrderItems", b =>
+            modelBuilder.Entity("BookStoreCRM.Domain.Entities.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("Order", (string)null);
+                });
+
+            modelBuilder.Entity("BookStoreCRM.Domain.Entities.OrderItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -204,35 +240,10 @@ namespace BookStoreCRM.DAL.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItems", (string)null);
+                    b.ToTable("OrderItem", (string)null);
                 });
 
-            modelBuilder.Entity("BookStoreCRM.Domain.Entities.Orders", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CustomerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("Orders", (string)null);
-                });
-
-            modelBuilder.Entity("BookStoreCRM.Domain.Entities.Reviews", b =>
+            modelBuilder.Entity("BookStoreCRM.Domain.Entities.Review", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -256,10 +267,33 @@ namespace BookStoreCRM.DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews", (string)null);
+                    b.ToTable("Review", (string)null);
                 });
 
-            modelBuilder.Entity("BookStoreCRM.Domain.Entities.Wishlists", b =>
+            modelBuilder.Entity("BookStoreCRM.Domain.Entities.SubCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("SubCategory", (string)null);
+                });
+
+            modelBuilder.Entity("BookStoreCRM.Domain.Entities.Wishlist", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -280,7 +314,7 @@ namespace BookStoreCRM.DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Wishlists", (string)null);
+                    b.ToTable("Wishlist", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -414,26 +448,33 @@ namespace BookStoreCRM.DAL.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("BookStoreCRM.Domain.Entities.Books", b =>
+            modelBuilder.Entity("BookStoreCRM.Domain.Entities.Book", b =>
                 {
-                    b.HasOne("BookStoreCRM.Domain.Entities.Categories", "Category")
+                    b.HasOne("BookStoreCRM.Domain.Entities.Category", "Category")
                         .WithMany("Books")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("BookStoreCRM.Domain.Entities.SubCategory", "SubCategory")
+                        .WithMany("Books")
+                        .HasForeignKey("SubCategoryId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.Navigation("Category");
+
+                    b.Navigation("SubCategory");
                 });
 
-            modelBuilder.Entity("BookStoreCRM.Domain.Entities.FriendRequests", b =>
+            modelBuilder.Entity("BookStoreCRM.Domain.Entities.FriendRequest", b =>
                 {
-                    b.HasOne("BookStoreCRM.Domain.Entities.ApplicationUsers", "Receiver")
+                    b.HasOne("BookStoreCRM.Domain.Entities.ApplicationUser", "Receiver")
                         .WithMany("ReceivedFriendRequests")
                         .HasForeignKey("ReceiverId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("BookStoreCRM.Domain.Entities.ApplicationUsers", "Sender")
+                    b.HasOne("BookStoreCRM.Domain.Entities.ApplicationUser", "Sender")
                         .WithMany("SendFriendRequests")
                         .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -444,15 +485,26 @@ namespace BookStoreCRM.DAL.Migrations
                     b.Navigation("Sender");
                 });
 
-            modelBuilder.Entity("BookStoreCRM.Domain.Entities.OrderItems", b =>
+            modelBuilder.Entity("BookStoreCRM.Domain.Entities.Order", b =>
                 {
-                    b.HasOne("BookStoreCRM.Domain.Entities.Books", "Book")
+                    b.HasOne("BookStoreCRM.Domain.Entities.ApplicationUser", "Customer")
+                        .WithMany("Orders")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("BookStoreCRM.Domain.Entities.OrderItem", b =>
+                {
+                    b.HasOne("BookStoreCRM.Domain.Entities.Book", "Book")
                         .WithMany("OrderItems")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("BookStoreCRM.Domain.Entities.Orders", "Order")
+                    b.HasOne("BookStoreCRM.Domain.Entities.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -463,26 +515,15 @@ namespace BookStoreCRM.DAL.Migrations
                     b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("BookStoreCRM.Domain.Entities.Orders", b =>
+            modelBuilder.Entity("BookStoreCRM.Domain.Entities.Review", b =>
                 {
-                    b.HasOne("BookStoreCRM.Domain.Entities.ApplicationUsers", "Customer")
-                        .WithMany("Orders")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("BookStoreCRM.Domain.Entities.Reviews", b =>
-                {
-                    b.HasOne("BookStoreCRM.Domain.Entities.Books", "Book")
+                    b.HasOne("BookStoreCRM.Domain.Entities.Book", "Book")
                         .WithMany("Reviews")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BookStoreCRM.Domain.Entities.ApplicationUsers", "User")
+                    b.HasOne("BookStoreCRM.Domain.Entities.ApplicationUser", "User")
                         .WithMany("Reviews")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -493,15 +534,26 @@ namespace BookStoreCRM.DAL.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("BookStoreCRM.Domain.Entities.Wishlists", b =>
+            modelBuilder.Entity("BookStoreCRM.Domain.Entities.SubCategory", b =>
                 {
-                    b.HasOne("BookStoreCRM.Domain.Entities.Books", "Book")
+                    b.HasOne("BookStoreCRM.Domain.Entities.Category", "Category")
+                        .WithMany("SubCategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("BookStoreCRM.Domain.Entities.Wishlist", b =>
+                {
+                    b.HasOne("BookStoreCRM.Domain.Entities.Book", "Book")
                         .WithMany("Wishlists")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BookStoreCRM.Domain.Entities.ApplicationUsers", "User")
+                    b.HasOne("BookStoreCRM.Domain.Entities.ApplicationUser", "User")
                         .WithMany("Wishlists")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -523,7 +575,7 @@ namespace BookStoreCRM.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("BookStoreCRM.Domain.Entities.ApplicationUsers", null)
+                    b.HasOne("BookStoreCRM.Domain.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -532,7 +584,7 @@ namespace BookStoreCRM.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("BookStoreCRM.Domain.Entities.ApplicationUsers", null)
+                    b.HasOne("BookStoreCRM.Domain.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -547,7 +599,7 @@ namespace BookStoreCRM.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BookStoreCRM.Domain.Entities.ApplicationUsers", null)
+                    b.HasOne("BookStoreCRM.Domain.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -556,14 +608,14 @@ namespace BookStoreCRM.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("BookStoreCRM.Domain.Entities.ApplicationUsers", null)
+                    b.HasOne("BookStoreCRM.Domain.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BookStoreCRM.Domain.Entities.ApplicationUsers", b =>
+            modelBuilder.Entity("BookStoreCRM.Domain.Entities.ApplicationUser", b =>
                 {
                     b.Navigation("Orders");
 
@@ -576,7 +628,7 @@ namespace BookStoreCRM.DAL.Migrations
                     b.Navigation("Wishlists");
                 });
 
-            modelBuilder.Entity("BookStoreCRM.Domain.Entities.Books", b =>
+            modelBuilder.Entity("BookStoreCRM.Domain.Entities.Book", b =>
                 {
                     b.Navigation("OrderItems");
 
@@ -585,14 +637,21 @@ namespace BookStoreCRM.DAL.Migrations
                     b.Navigation("Wishlists");
                 });
 
-            modelBuilder.Entity("BookStoreCRM.Domain.Entities.Categories", b =>
+            modelBuilder.Entity("BookStoreCRM.Domain.Entities.Category", b =>
                 {
                     b.Navigation("Books");
+
+                    b.Navigation("SubCategories");
                 });
 
-            modelBuilder.Entity("BookStoreCRM.Domain.Entities.Orders", b =>
+            modelBuilder.Entity("BookStoreCRM.Domain.Entities.Order", b =>
                 {
                     b.Navigation("OrderItems");
+                });
+
+            modelBuilder.Entity("BookStoreCRM.Domain.Entities.SubCategory", b =>
+                {
+                    b.Navigation("Books");
                 });
 #pragma warning restore 612, 618
         }

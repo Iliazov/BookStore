@@ -37,10 +37,25 @@
     </div>
     <div class="mb-3">
         <label asp-for="CategoryId" class="form-label"></label>
-        <select asp-for="CategoryId" class="form-select" asp-items="Model.Categories">
+        <select asp-for="CategoryId" class="form-select" asp-items="Model.Categories" id="categorySelect">
             <option value="">-- Select Category --</option>
         </select>
         <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="SubCategoryId" class="form-label"></label>
+
+        <select asp-for="SubCategoryId"
+                asp-items="Model.SubCategories"
+                class="form-select"
+                id="subCategorySelect"
+               >
+
+            <option value="">-- Select Subcategory --</option>
+        </select>
+
+        <span asp-validation-for="SubCategoryId"
+              class="text-danger"></span>
     </div>
     @if (Model.ImageUrl is not null)
     {
@@ -73,7 +88,53 @@
 
 </form>
 
-@section Scripts
-{
+@section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        const categorySelect = document.getElementById("categorySelect");
+        const subCategorySelect = document.getElementById("subCategorySelect");
+
+        categorySelect.addEventListener("change", async function(){
+            const categoryId = this.value;
+             subCategorySelect.innerHTML =
+                '<option value="">-- Select Subcategory --</option>';
+
+            subCategorySelect.disabled = true;
+
+            if (!categoryId) {
+                return;
+            }
+
+            try {
+                const response = await fetch(
+                    `@Url.Action("GetSubCategories", "SubCategory")?categoryId=${categoryId}`
+                );
+
+                if (!response.ok) {
+                    throw new Error("Could not load subcategories.");
+                }
+
+                const subCategories = await response.json();
+
+                subCategories.forEach(subCategory => {
+                    const option = document.createElement("option");
+
+                    option.value = subCategory.id;
+                    option.textContent = subCategory.name;
+
+                    subCategorySelect.appendChild(option);
+                });
+
+                subCategorySelect.disabled =
+                    subCategories.length === 0;
+            }
+            catch (error) {
+                console.error(error);
+
+                alert("Could not load subcategories.");
+            }
+           });
+
+    </script>
 }

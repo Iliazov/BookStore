@@ -24,12 +24,14 @@
                     </p>
 
                     <div class="d-flex justify-content-center gap-2">
-                        <a asp-area="Admin"
-                           asp-controller="User"
-                           asp-action="Index"
-                           class="btn btn-primary">
-                            Back to users
-                        </a>
+                        <button type="button"
+                                class="btn btn-primary"
+                                onclick="window.history.length > 1
+                                  ? history.back()
+                                  : window.location.href='@Url.Action("Index", "Home", new { area = "" })'">
+                            Back
+                        </button>
+
 
                         <a asp-area=""
                            asp-controller="Home"

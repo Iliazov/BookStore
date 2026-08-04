@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BookStoreCRM.DAL.Configuration
 {
-    public class ReviewsConfiguration : IEntityTypeConfiguration<Reviews>
+    public class ReviewsConfiguration : IEntityTypeConfiguration<Review>
     {
-        public void Configure(EntityTypeBuilder<Reviews> builder)
+        public void Configure(EntityTypeBuilder<Review> builder)
         {
-            builder.ToTable(nameof(Reviews));
+            builder.ToTable(nameof(Review));
             builder.HasKey(r => r.Id);
 
             builder.Property(r => r.Grade)

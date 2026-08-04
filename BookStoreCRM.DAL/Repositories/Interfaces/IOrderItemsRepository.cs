@@ -2,7 +2,7 @@
 
 namespace BookStoreCRM.DAL.Repositories.Interfaces
 {
-    public interface IOrderItemsRepository : IGenericRepository<OrderItems>
+    public interface IOrderItemsRepository : IGenericRepository<OrderItem>
     {
     }
 }

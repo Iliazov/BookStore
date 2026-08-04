@@ -12,6 +12,7 @@ namespace BookStoreCRM.DAL.UnitOfWork
         IOrdersRepository OrdersRepository { get; }
         IReviewsRepository ReviewsRepository { get; }
         IWishlistsRepository WishlistsRepository { get; }
+        ISubCategoryRepository SubCategoryRepository { get; }
         Task Save();
     }
 }

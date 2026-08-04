@@ -8,9 +8,9 @@ namespace BookStoreCRM.BLL.Services
 {
     public class AccountService : IAccountService
     {
-        private readonly UserManager<ApplicationUsers> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public AccountService(UserManager<ApplicationUsers> userManager)
+        public AccountService(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
         }
@@ -26,7 +26,7 @@ namespace BookStoreCRM.BLL.Services
                         Description = "Email already exists."
                     });
             }
-            var user = new ApplicationUsers
+            var user = new ApplicationUser
             {
                 FirstName = registerDTO.FirstName,
                 LastName = registerDTO.LastName,

@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BookStoreCRM.DAL.Configuration
 {
-    public class ApplicationUserConfiguration : IEntityTypeConfiguration<ApplicationUsers>
+    public class ApplicationUserConfiguration : IEntityTypeConfiguration<ApplicationUser>
     {
-        public void Configure(EntityTypeBuilder<ApplicationUsers> builder)
+        public void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {
-            builder.ToTable(nameof(ApplicationUsers));
+            builder.ToTable(nameof(ApplicationUser));
             builder.HasKey(x => x.Id);
 
             builder.Property(u => u.FirstName)

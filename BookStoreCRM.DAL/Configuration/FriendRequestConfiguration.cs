@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BookStoreCRM.DAL.Configuration
 {
-    public class FriendRequestConfiguration : IEntityTypeConfiguration<FriendRequests>
+    public class FriendRequestConfiguration : IEntityTypeConfiguration<FriendRequest>
     {
-        public void Configure(EntityTypeBuilder<FriendRequests> builder)
+        public void Configure(EntityTypeBuilder<FriendRequest> builder)
         {
-            builder.ToTable(nameof(FriendRequests));
+            builder.ToTable(nameof(FriendRequest));
             builder.HasKey(f => f.Id);
 
             builder.Property(f => f.Status)

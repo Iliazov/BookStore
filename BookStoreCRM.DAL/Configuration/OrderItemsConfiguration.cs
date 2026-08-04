@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BookStoreCRM.DAL.Configuration
 {
-    public class OrderItemsConfiguration : IEntityTypeConfiguration<OrderItems>
+    public class OrderItemsConfiguration : IEntityTypeConfiguration<OrderItem>
     {
-        public void Configure(EntityTypeBuilder<OrderItems> builder)
+        public void Configure(EntityTypeBuilder<OrderItem> builder)
         {
-            builder.ToTable(nameof(OrderItems));
+            builder.ToTable(nameof(OrderItem));
             builder.HasKey(oi => oi.Id);
 
             builder.Property(oi => oi.Price)

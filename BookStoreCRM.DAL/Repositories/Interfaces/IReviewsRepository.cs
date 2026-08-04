@@ -2,9 +2,7 @@
 
 namespace BookStoreCRM.DAL.Repositories.Interfaces
 {
-    public interface IReviewsRepository : IGenericRepository<Reviews>
+    public interface IReviewsRepository : IGenericRepository<Review>
     {
-        Task<Reviews?> GetReviewDetailsAsync(Guid id);
-        Task<List<Reviews>> GetReviewsWithBookAndUser();
     }
 }

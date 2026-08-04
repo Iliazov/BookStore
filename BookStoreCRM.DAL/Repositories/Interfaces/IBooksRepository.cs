@@ -2,8 +2,7 @@
 
 namespace BookStoreCRM.DAL.Repositories.Interfaces
 {
-    public interface IBooksRepository : IGenericRepository<Books>
+    public interface IBooksRepository : IGenericRepository<Book>
     {
-        Task<Books?> GetBookWithCategoryAsync(Guid id);
     }
 }
